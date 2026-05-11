@@ -25,8 +25,8 @@ while True:
         continue
 
     try:
-        num1 = float(input("Enter a first number: "))
-        num2 = float(input("Enter a second number: "))
+        num1 = int(value) if (value:= input("Enter a first number: ")).isdigit() else float(value)
+        num2 = int(value) if (value:= input("Enter a second number: ")).isdigit() else float(value)
 
         if choice in {"4", "5", "6"} and num2 == 0:
             print("Cannot divide by zero!")
