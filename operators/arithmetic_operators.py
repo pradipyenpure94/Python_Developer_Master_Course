@@ -1,4 +1,4 @@
-"""Arithmetic Operators"""
+"""Arithmetic Operators / Simple calculator"""
 
 HORIZONTAL_LINE = "*"*50
 
