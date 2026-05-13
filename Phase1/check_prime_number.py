@@ -1,4 +1,4 @@
-"""Check prime number."""
+"""Check whether a number is prime."""
 
 try:
     number = int(input("Enter a number: "))
@@ -7,11 +7,14 @@ try:
 
     if number < 2:
         is_prime = False
-    for i in range(2, int(number ** 0.5) + 1):
-        if number % i == 0:
-            is_prime = False
-            break
-
+    else:
+        i = 2
+        stop = int(number ** 0.5) + 1
+        while i < stop:
+            if number % i == 0:
+                is_prime = False
+                break
+            i += 1
     if is_prime:
         print(f"{number} is a prime number.")
     else:
