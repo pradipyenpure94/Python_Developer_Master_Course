@@ -2,15 +2,19 @@
 
 try:
     marks = float(input("Enter student marks: "))
-    if marks > 90:
-        print("Grade A")
-    elif marks >= 75:
-        print("Grade B")
-    elif marks >= 60:
-        print("Grade C")
-    elif marks >= 35:
-        print("Pass")
+    if marks < 0 or marks > 100:
+        print("Marks must be between 1 to 100.")
     else:
-        print("Fail")
+        match marks:
+            case marks if marks > 90:
+                print("Grade A")
+            case marks if marks >= 75:
+                print("Grade B")
+            case marks if marks >= 60:
+                print("Grade C")
+            case marks if marks >= 35:
+                print("Pass")
+            case _:
+                print("Fail")
 except ValueError:
     print("Invalid input! Please enter a number.")
