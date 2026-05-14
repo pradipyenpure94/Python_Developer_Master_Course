@@ -1,4 +1,7 @@
 """Square pattern."""
 
-for _ in range(10):
-    print(" * "*10)
+n = 10
+i = 0
+while i < n:
+    print(" * "*n)
+    i += 1
