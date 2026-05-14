@@ -1,6 +1,8 @@
-"""Right triangle number pattern."""
+"""Right triangle continuous increasing number pattern."""
 
-for i in range(1, 10):
-    for j in range(1, i + 1):
-        print(j, end=" ")
+number = 1
+for i in range(1, 5):
+    for _ in range(i):
+        print(number, end=" ")
+        number += 1
     print()
