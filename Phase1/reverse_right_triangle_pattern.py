@@ -1,6 +1,6 @@
-"""Reverse right triangle number pattern"""
+"""Reverse right triangle number increasing pattern"""
 
 for i in range(10, -1, -1):
     for j in range(i):
-        print(j, end=" ")
+        print(i, end=" ")
     print()
