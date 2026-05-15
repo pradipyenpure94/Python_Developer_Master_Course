@@ -7,9 +7,15 @@ try:
     if n <= 0:
         print("Please enter a positive integer for number of elements.")
     else:
-        for _ in range(n):
-            value = int(input("Enter a number: "))
-            numbers.append(value)
+        index = n - 1
+        while index >= 0:
+            try:
+                value = int(input("Enter a number: "))
+                numbers.append(value)
+                index -= 1
+            except ValueError:
+                print("Invalid input! Please enter an integer.")
+                continue
 
         print(f"Numbers: {numbers}")
 
