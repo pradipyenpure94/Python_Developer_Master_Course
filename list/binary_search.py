@@ -17,4 +17,3 @@ while left <= right:
         right = mid - 1
 else:
     print("Number not found in list.")
-
