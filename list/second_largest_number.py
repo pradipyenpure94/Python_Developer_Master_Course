@@ -6,15 +6,19 @@ if len(numbers) < 2:
     print("Second largest does not exist!")
 else:
     first = second = float('-inf')
+    index = 0
+    length = len(numbers)
 
-    for number in numbers:
-        if number > first:
+    while index < length:
+        current_number = numbers[index]
+        if current_number > first:
             second = first
-            first = number
-        elif number > second and number != first:
-            second = number
+            first = current_number
+        elif current_number > second and current_number != first:
+            second = current_number
+        index += 1
 
     if second == float('-inf'):
         print("No second largest element found (all elements may be equal)")
-    elif second != float('-inf'):
+    else:
         print(f"Second Largest: {second}")
