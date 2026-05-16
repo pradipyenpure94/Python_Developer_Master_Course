@@ -2,7 +2,7 @@
 
 
 def is_prime(number: int) -> bool:
-    """check whether number is prime
+    """check whether a number is prime
     Args:
         number (int): input integer number
     Returns:
@@ -18,10 +18,6 @@ def is_prime(number: int) -> bool:
 
 numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-prime_numbers = []
-
-for num in numbers:
-    if is_prime(number=num):
-        prime_numbers.append(num)
+prime_numbers = [num for num in numbers if is_prime(number=num)]
 
 print(f"Prime numbers: {prime_numbers}")
