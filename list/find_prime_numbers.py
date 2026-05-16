@@ -18,6 +18,14 @@ def is_prime(number: int) -> bool:
 
 numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-prime_numbers = [num for num in numbers if is_prime(number=num)]
+prime_numbers = []
+index = 0
+length = len(numbers)
+
+while index < length:
+    current_number = numbers[index]
+    if is_prime(number=current_number):
+        prime_numbers.append(current_number)
+    index += 1
 
 print(f"Prime numbers: {prime_numbers}")
