@@ -3,7 +3,11 @@
 t = (2, 4, 6, 3, 7, 8)
 target = 10
 
-for i, value in enumerate(t):
-    for j in range(i+1, len(t)):
-        if value + t[j] == target:
-            print((value, t[j]))
+i = 0
+while i < len(t):
+    j = 0
+    while j < len(t):
+        if t[i] + t[j] == target:
+            print((t[i], t[j]))
+        j += 1
+    i += 1
