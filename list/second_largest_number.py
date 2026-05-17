@@ -14,7 +14,7 @@ else:
         if current_number > first:
             second = first
             first = current_number
-        elif current_number > second and current_number != first:
+        elif current_number >= second and current_number != first:
             second = current_number
         index += 1
 
