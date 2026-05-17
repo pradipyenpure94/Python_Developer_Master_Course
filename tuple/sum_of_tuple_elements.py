@@ -8,7 +8,6 @@ length = len(t)
 
 while index < length:
     total += t[index]
-
     index += 1
 
 print(f"Sum of tuple elements: {total}")
