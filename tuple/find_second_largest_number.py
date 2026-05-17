@@ -13,5 +13,7 @@ else:
             first_number = number
         elif number >= second_number and number != first_number:
             second_number = number
-
-    print(f"Second largest number: {second_number}")
+    if second_number == float('-inf'):
+        print("No second largest number found (may be equal number).")
+    else:
+        print(f"Second largest number: {second_number}")
