@@ -1,9 +1,9 @@
-"""Find largest consecutive sequence."""
+"""Find smallest consecutive sequence."""
 
 numbers = [10, 5, 12, 3, 55, 4, 11, 13]
 
 numbers_set = set(numbers)
-max_sequence_length = 0
+min_sequence_length = float('inf')
 
 for number in numbers_set:
     if number - 1 not in numbers_set:
@@ -14,6 +14,10 @@ for number in numbers_set:
             current_number += 1
             current_length += 1
 
-        max_sequence_length = max(max_sequence_length, current_length)
+        if current_length > 1:
+            min_sequence_length = min(min_sequence_length, current_length)
 
-print(f"Consecutive sequence: {max_sequence_length}")
+if min_sequence_length != float('inf'):
+    print(f"Consecutive sequence: {min_sequence_length}")
+else:
+    print("No consecutive sequence found.")
