@@ -1,8 +1,8 @@
 """Check if list is palindrome."""
 
-numbers = [1, 2, 3, 1]
+numbers = [1, 2, 1]
 
-if list(reversed(numbers)) == numbers:
+if numbers[::-1] == numbers:
     print("List is a palindrome.")
 else:
     print("List is not a palindrome.")
