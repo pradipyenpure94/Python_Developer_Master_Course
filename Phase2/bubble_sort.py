@@ -4,15 +4,21 @@ numbers = [10, 20, 50, 60, 40, 80, 70, 90]
 
 numbers_count = len(numbers)
 
-for i in range(numbers_count):
+i = 0
+while i < numbers_count - 1:
     swapped = False
+    j = 0
 
-    for j in range(0, numbers_count - i - 1):
+    while j < numbers_count - i - 1:
         if numbers[j] > numbers[j + 1]:
             numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
             swapped = True
 
+        j += 1
+
     if not swapped:
         break
+
+    i += 1
 
 print(f"Sorted numbers: {numbers}")
