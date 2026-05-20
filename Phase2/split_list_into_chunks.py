@@ -5,9 +5,11 @@ chunk_size = 4
 
 if chunk_size > 0:
     chunks = []
+    index = 0
 
-    for index in range(0, len(numbers), chunk_size):
+    while index < len(numbers):
         chunks.append(numbers[index:index + chunk_size])
+        index += chunk_size
 
     print(f"Numbers List Chunks: {chunks}")
 else:
