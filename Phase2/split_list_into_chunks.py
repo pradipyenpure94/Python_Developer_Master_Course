@@ -4,8 +4,11 @@ numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 chunk_size = 4
 
 if chunk_size > 0:
-    chunks = [numbers[index:index + chunk_size]
-              for index in range(0, len(numbers), chunk_size)]
-    print(f"Numbers list chunks: {chunks}")
+    chunks = []
+
+    for index in range(0, len(numbers), chunk_size):
+        chunks.append(numbers[index:index + chunk_size])
+
+    print(f"Numbers List Chunks: {chunks}")
 else:
     print("Chunk size must be greater than zero.")
