@@ -6,19 +6,24 @@ data = [1, 2, [1, 2, 3], [4, 5, 6], [7, 8, 9, [10, 11, 12]]]
 
 
 def flatten(nested_list: list[Any]) -> list[Any]:
-    """Iterate sublist into single list.
+    """Flatten nested lists into a single list.
     Args:
-        nested_list (list[Any]): Input as sublist or int or float,..
+        nested_list (list[Any]): Input nested list containing lists or values.
     Returns:
         list[Any]: Flattened list
     """
     flat = []
+    index = 0
 
-    for item in nested_list:
-        if isinstance(item, list):
-            flat.extend(flatten(item))
+    while index < len(nested_list):
+        current_item = nested_list[index]
+        if isinstance(current_item, list):
+            flat.extend(flatten(current_item))
         else:
-            flat.append(item)
+            flat.append(current_item)
+
+        index += 1
+
     return flat
 
 
