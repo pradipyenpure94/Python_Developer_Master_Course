@@ -6,10 +6,5 @@ x = [[12, 7],
      ]
 
 row, col = len(x), len(x[0])
-result = [[0] * row for _ in range(col)]
-
-for i in range(row):
-    for j in range(col):
-        result[j][i] = x[i][j]
-
+result = [[x[i][j] for i in range(row)] for j in range(col)]
 print(f"Transpose Matrix: {result}")
