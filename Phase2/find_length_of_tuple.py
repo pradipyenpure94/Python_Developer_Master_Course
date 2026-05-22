@@ -3,8 +3,10 @@
 numbers = (2, 4, 6, 8, 10)
 
 count = 0
+index = 0
 
-for _ in numbers:
+while index < len(numbers):
     count += 1
+    index += 1
 
 print(f"Length of tuple: {count}")
