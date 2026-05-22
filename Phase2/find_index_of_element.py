@@ -5,7 +5,10 @@ target = 1
 start = 4
 end = 7
 
-if target in numbers[start:end]:
-    print(f"Index of {target} is : {numbers.index(target, start, end)}")
+for index in range(start, end):
+    number = numbers[index]
+    if number == target:
+        print(f"Index of {target} is {index}")
+        break
 else:
     print("Element not found in given tuple range.")
