@@ -3,8 +3,8 @@
 numbers = [1, 2, 3, 4, 5, 6, 8, 5, 2, 1, 5, 9, 3, 5, 7]
 freq = {}
 
-for number in numbers:
-    freq[number] = freq.get(number, 0) + 1
-
-duplicate_numbers = [number for number, count in freq.items() if count > 1]
+duplicate_numbers = [number
+                     for index, number in enumerate(numbers)
+                     if numbers.count(number) > 1 and
+                     number not in numbers[:index]]
 print(f"Duplicate numbers: {duplicate_numbers}")
