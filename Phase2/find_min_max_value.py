@@ -5,12 +5,16 @@ numbers = [1, 4, 7, 8, 5, 2, 3, 6, 9]
 if numbers:
     min_value = numbers[0]
     max_value = numbers[0]
+    index = 1
 
-    for number in numbers[1:]:
-        if number < min_value:
-            min_value = number
-        elif number > max_value:
-            max_value = number
+    while index < len(numbers):
+        current_number = numbers[index]
+        if current_number < min_value:
+            min_value = current_number
+        elif current_number > max_value:
+            max_value = current_number
+
+        index += 1
 
     print(f"Minimum value: {min_value}")
     print(f"Maximum value: {max_value}")
