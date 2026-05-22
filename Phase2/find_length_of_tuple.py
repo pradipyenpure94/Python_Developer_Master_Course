@@ -2,5 +2,9 @@
 
 numbers = (2, 4, 6, 8, 10)
 
-length_of_tuple = sum(1 for _ in numbers)
-print(f"Length of tuple: {length_of_tuple}")
+count = 0
+
+for _ in numbers:
+    count += 1
+
+print(f"Length of tuple: {count}")
