@@ -1,12 +1,7 @@
 """Find sum of tuple elements."""
 
+from functools import reduce
+
 numbers = (1, 2, 3, 4, 5, 6)
-
-total = 0
-index = 0
-
-while index < len(numbers):
-    total += numbers[index]
-    index += 1
-
+total = reduce(lambda x, y: x + y, numbers, 0)
 print(f"Sum of numbers (tuple): {total}")
