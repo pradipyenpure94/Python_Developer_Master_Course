@@ -2,20 +2,18 @@
 
 fruits = ("Banana", "apple", "cherry", "kiwi", "Orange")
 
-# Selection sort algorithm
+# Insertion sort algorithm
 fruits_list = list(fruits)
 
-for i, _ in enumerate(fruits_list):
-    min_index = i
+for i in range(1, len(fruits_list)):
+    current = fruits_list[i]
+    j = i - 1
 
-    for j in range(i + 1, len(fruits_list)):
-        if fruits_list[j].casefold() < fruits_list[min_index].casefold():
-            min_index = j
+    while j >= 0 and fruits_list[j].lower() > current.lower():
+        fruits_list[j + 1] = fruits_list[j]
+        j -= 1
+    fruits_list[j + 1] = current
 
-    if i != min_index:
-        fruits_list[i], fruits_list[min_index] = (fruits_list[min_index],
-                                                  fruits_list[i])
-
-
+# Keep back to tuple
 sorted_tuple = tuple(fruits_list)
 print(f"Sorted tuple: {sorted_tuple}")
