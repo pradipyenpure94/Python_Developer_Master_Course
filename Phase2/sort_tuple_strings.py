@@ -2,20 +2,20 @@
 
 fruits = ("Banana", "apple", "cherry", "kiwi", "Orange")
 
-# Bubble sort algorithm
+# Selection sort algorithm
 fruits_list = list(fruits)
 
-for i in range(len(fruits_list)):
-    swapped = False
+for i, _ in enumerate(fruits_list):
+    min_index = i
 
-    for j in range(len(fruits_list) - i - 1):
-        if fruits_list[j].casefold() > fruits_list[j + 1].casefold():
-            fruits_list[j], fruits_list[j + 1] = (fruits_list[j + 1],
-                                                  fruits_list[j])
-            swapped = True
+    for j in range(i + 1, len(fruits_list)):
+        if fruits_list[j].casefold() < fruits_list[min_index].casefold():
+            min_index = j
 
-    if not swapped:
-        break
+    if i != min_index:
+        fruits_list[i], fruits_list[min_index] = (fruits_list[min_index],
+                                                  fruits_list[i])
+
 
 sorted_tuple = tuple(fruits_list)
 print(f"Sorted tuple: {sorted_tuple}")
