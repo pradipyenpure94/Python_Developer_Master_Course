@@ -2,18 +2,21 @@
 
 numbers = (10, 2, 8, 5)
 
-# Bubble sort algorithm
+# Selection sort algorithm
 numbers_list = list(numbers)
 
-for i in range(len(numbers_list)):
-    swapped = False
-    for j in range(len(numbers_list) - i - 1):
-        if numbers_list[j] > numbers_list[j + 1]:
-            numbers_list[j], numbers_list[j + 1] = (numbers_list[j + 1],
-                                                    numbers_list[j])
-            swapped = True
-    if not swapped:
-        break
+for i, _ in enumerate(numbers_list):
+    min_index = i
 
+    for j in range(i + 1, len(numbers_list)):
+        if numbers_list[j] < numbers_list[min_index]:
+            min_index = j
+
+    # Swap only if needed
+    if i != min_index:
+        numbers_list[i], numbers_list[min_index] = (numbers_list[min_index],
+                                                    numbers_list[i])
+
+# Convert back to tuple
 sorted_tuple = tuple(numbers_list)
 print(f"Sorted tuple: {sorted_tuple}")
