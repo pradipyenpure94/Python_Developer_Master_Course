@@ -7,10 +7,7 @@ freq = dict()
 for num in numbers:
     freq[num] = freq.get(num, 0) + 1
 
-repeated_items = []
-
-for number, count in freq.items():
-    if count > 1:
-        repeated_items.append(number)
-
+repeated_items = [num
+                  for num, count in freq.items()
+                  if count > 1]
 print(f"Repeated items: {repeated_items}")
