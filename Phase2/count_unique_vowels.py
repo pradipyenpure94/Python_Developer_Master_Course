@@ -3,6 +3,11 @@
 text = "India"
 
 vowels = {"a", "e", "i", "o", "u"}
+count = 0
+input_text_set = set(text.casefold())
 
-count = len({char for char in text.casefold() if char in vowels})
+for char in input_text_set:
+    if char in vowels:
+        count += 1
+
 print(f"Count unique vowels: {count}")
