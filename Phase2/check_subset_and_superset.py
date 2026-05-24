@@ -1,24 +1,24 @@
 """Check subset and superset."""
 
-numbers = {1, 2, 3, 4, 5, 6}
-even_numbers = {2, 4, 6}
+numbers = {1, 2, 3, 4, 5, 6, 7}
+even_numbers = {2, 4, 6, 8}
 
 # Check subset
-result = True
+is_subset = True
 
 for number in even_numbers:
     if number not in numbers:
-        result = False
+        is_subset = False
         break
 
-print(f"Is subset ? {result}")
+print(f"Is subset ? {is_subset}")
 
 # Check superset
-result = True
+is_superset = True
 
 for number in even_numbers:
     if number not in numbers:
-        result = False
+        is_superset = False
         break
 
-print(f"Is superset? {result}")
+print(f"Is superset? {is_superset}")
