@@ -12,7 +12,10 @@ def factorial_sum(num: int) -> int:
     Returns:
         int: Sum of factorial of each digit in number.
     """
-    return sum(factorial(int(i)) for i in str(num))
+    total = 0
+    for digit in str(num):
+        total += factorial(int(digit))
+    return total
 
 
 def is_strong_number(num: int) -> bool:
