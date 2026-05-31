@@ -12,9 +12,13 @@ def factorial_sum(num: int) -> int:
     Returns:
         int: Sum of factorial of each digit in number.
     """
+    if num <= 0:
+        raise ValueError("Number must be greater than zero.")
     total = 0
-    for digit in str(num):
-        total += factorial(int(digit))
+    while num > 0:
+        digit = num % 10
+        total += factorial(digit)
+        num //= 10
     return total
 
 
@@ -39,6 +43,6 @@ if __name__ == "__main__":
         if is_strong_number(num=number):
             print(f"{number} is a strong number.")
         else:
-            print(f"{number} is not a strong number")
+            print(f"{number} is not a strong number.")
     except ValueError as error:
         print(f"Error: {error}")
