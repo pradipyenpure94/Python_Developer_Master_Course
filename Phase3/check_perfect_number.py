@@ -14,13 +14,7 @@ def is_perfect_number(num: int) -> bool:
     if num <= 0:
         raise ValueError("Number must be greater than zero.")
 
-    total = 0
-    i = 1
-
-    while i < num:
-        if num % i == 0:
-            total += i
-        i += 1
+    total = sum(i for i in range(1, num) if num % i == 0)
     return num == total
 
 
