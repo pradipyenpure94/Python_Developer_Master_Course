@@ -15,10 +15,12 @@ def is_perfect_number(num: int) -> bool:
         raise ValueError("Number must be greater than zero.")
 
     total = 0
+    i = 1
 
-    for i in range(1, num):
+    while i < num:
         if num % i == 0:
             total += i
+        i += 1
     return num == total
 
 
