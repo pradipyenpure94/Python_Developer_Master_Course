@@ -11,7 +11,7 @@ def reverse_string(text: str) -> str:
     Returns:
         str: Reversed string.
     """
-    return "".join(reversed(text))
+    return text[::-1]
 
 
 if __name__ == "__main__":
