@@ -1,7 +1,5 @@
 """Neon number."""
 
-from sum_of_digits import sum_of_digits
-
 
 def is_neon_number(num: int) -> bool:
     """
@@ -17,7 +15,7 @@ def is_neon_number(num: int) -> bool:
         raise ValueError("Number must be non-negative.")
 
     square = num ** 2
-    total = sum_of_digits(square)
+    total = sum(int(number) for number in str(square))
     return num == total
 
 
