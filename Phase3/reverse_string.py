@@ -11,11 +11,7 @@ def reverse_string(text: str) -> str:
     Returns:
         str: Reversed string.
     """
-    chars = []
-
-    for index in range(len(text) - 1, -1, -1):
-        chars.append(text[index])
-    return "".join(chars)
+    return "".join(reversed(text))
 
 
 if __name__ == "__main__":
