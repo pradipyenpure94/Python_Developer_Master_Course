@@ -12,7 +12,12 @@ def convert_binary_to_decimal(num: str) -> int:
     """
     if any(number not in {"0", "1"} for number in num):
         raise ValueError("Binary number must contain 0 or 1")
-    return int(num, 2)
+
+    total = 0
+    for power, digit in enumerate(num):
+        digit = int(digit)
+        total += digit * (digit ** power)
+    return total
 
 
 if __name__ == "__main__":
