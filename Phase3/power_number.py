@@ -12,7 +12,7 @@ def power_of_number(base: int, exponent: int) -> int | float:
     Returns:
         int | float: Power of number.
     """
-    return base ** exponent
+    return pow(base, exponent)
 
 
 if __name__ == "__main__":
