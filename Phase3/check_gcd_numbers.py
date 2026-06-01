@@ -1,5 +1,7 @@
 """Check GCD."""
 
+from math import gcd
+
 
 def find_gcd(num1: int, num2: int) -> int:
     """
@@ -15,9 +17,7 @@ def find_gcd(num1: int, num2: int) -> int:
     num1 = abs(num1)
     num2 = abs(num2)
 
-    while num2 != 0:
-        num1, num2 = num2, num1 % num2
-    return num1
+    return gcd(num1, num2)
 
 
 if __name__ == "__main__":
