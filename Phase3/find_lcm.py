@@ -1,6 +1,6 @@
 """Find LCM."""
 
-from check_gcd_numbers import find_gcd
+from math import lcm
 
 
 def find_lcm(num1: int, num2: int) -> int:
@@ -13,11 +13,7 @@ def find_lcm(num1: int, num2: int) -> int:
     Returns:
         int: LCM of two numbers.
     """
-    num1 = abs(num1)
-    num2 = abs(num2)
-    if num1 == 0 or num2 == 0:
-        return 0
-    return (num1 * num2) // find_gcd(num2=num2, num1=num1)
+    return lcm(num1, num2)
 
 
 if __name__ == "__main__":
