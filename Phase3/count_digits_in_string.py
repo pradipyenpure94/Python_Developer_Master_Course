@@ -12,10 +12,15 @@ def count_digits(text: str) -> int:
         int: Count of digits in string.
     """
     count = 0
+    index = 0
 
-    for char in text:
+    while index < len(text):
+        char = text[index]
         if char.isdigit():
             count += 1
+
+        index += 1
+
     return count
 
 
