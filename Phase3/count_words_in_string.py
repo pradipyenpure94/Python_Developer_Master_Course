@@ -12,9 +12,11 @@ def count_words(text: str) -> int:
         int: Count of words in string.
     """
     count = 0
+    index = 0
 
-    for _ in text.split():
+    while index < len(text.split()):
         count += 1
+        index += 1
     return count
 
 
