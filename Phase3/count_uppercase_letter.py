@@ -12,10 +12,15 @@ def count_uppercase_letter(text: str) -> int:
         int: Count of uppercase letters in string.
     """
     count = 0
+    index = 0
 
-    for char in text:
+    while index < len(text):
+        char = text[index]
         if char.isalpha() and char.isupper():
             count += 1
+
+        index += 1
+
     return count
 
 
