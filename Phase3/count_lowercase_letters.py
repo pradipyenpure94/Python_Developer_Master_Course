@@ -11,7 +11,12 @@ def count_lowercase_letters(text: str) -> int:
     Returns:
         int: Count of lowercase letters in string.
     """
-    return sum(1 for char in text if char.isalpha() and char.islower())
+    count = 0
+
+    for char in text:
+        if char.isalpha() and char.islower():
+            count += 1
+    return count
 
 
 if __name__ == "__main__":
