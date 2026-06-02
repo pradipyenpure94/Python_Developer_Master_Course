@@ -11,7 +11,16 @@ def count_vowels(text: str) -> int:
         int: Count of vowels in string.
     """
     vowels = "aeiou"
-    return sum(1 for char in text.casefold() if char in vowels)
+    count = 0
+    i = 0
+    input_text = text.casefold().strip()
+
+    while i < len(input_text):
+        char = input_text[i]
+        if char in vowels:
+            count += 1
+        i += 1
+    return count
 
 
 if __name__ == "__main__":
