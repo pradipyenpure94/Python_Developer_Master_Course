@@ -13,10 +13,17 @@ def remove_duplicate_chars(text: str) -> str:
     """
     unique_characters = []
     seen = set()
-    for char in text.casefold():
+    index = 0
+    input_text = text.casefold()
+
+    while index < len(input_text):
+        char = input_text[index]
         if char.isalpha() and char not in seen:
             unique_characters.append(char)
             seen.add(char)
+
+        index += 1
+
     return "".join(unique_characters)
 
 
