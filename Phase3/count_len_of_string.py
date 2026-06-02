@@ -11,7 +11,11 @@ def count_string_length(text: str) -> int:
     Returns:
         int: length of input string.
     """
-    return sum(1 for char in text)
+    count = 0
+
+    for _ in text:
+        count += 1
+    return count
 
 
 if __name__ == "__main__":
