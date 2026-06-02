@@ -12,10 +12,12 @@ def count_string_length(text: str) -> int:
         int: length of input string.
     """
     count = 0
-
-    for _ in text:
-        count += 1
-    return count
+    try:
+        while True:
+            text[count]
+            count += 1
+    except IndexError:
+        return count
 
 
 if __name__ == "__main__":
