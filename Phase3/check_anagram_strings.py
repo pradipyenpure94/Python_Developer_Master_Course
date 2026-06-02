@@ -1,5 +1,7 @@
 """Check anagram strings."""
 
+from collections import Counter
+
 
 def is_anagram(text1: str, text2: str) -> bool:
     """
@@ -12,7 +14,7 @@ def is_anagram(text1: str, text2: str) -> bool:
     """
     text1 = text1.replace(" ", "").casefold()
     text2 = text2.replace(" ", "").casefold()
-    return sorted(text1) == sorted(text2)
+    return Counter(text1) == Counter(text2)
 
 
 if __name__ == "__main__":
