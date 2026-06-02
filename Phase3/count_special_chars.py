@@ -11,7 +11,12 @@ def count_special_characters(text: str) -> int:
     Returns:
         int: Count of special characters in string.
     """
-    return sum(1 for char in text if not char.isalnum() and not char.isspace())
+    count = 0
+
+    for char in text:
+        if not char.isalnum() and not char.isspace():
+            count += 1
+    return count
 
 
 if __name__ == "__main__":
