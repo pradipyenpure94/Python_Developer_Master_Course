@@ -13,10 +13,13 @@ def count_consonants(text: str) -> int:
     vowels = "aeiou"
     input_text = text.casefold().strip()
     count = 0
+    i = 0
 
-    for char in input_text:
+    while i < len(input_text):
+        char = input_text[i]
         if char.isalpha() and char not in vowels:
             count += 1
+        i += 1
     return count
 
 
