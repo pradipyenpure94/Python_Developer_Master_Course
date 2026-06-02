@@ -11,7 +11,12 @@ def count_digits(text: str) -> int:
     Returns:
         int: Count of digits in string.
     """
-    return sum(1 for char in text if char.isdigit())
+    count = 0
+
+    for char in text:
+        if char.isdigit():
+            count += 1
+    return count
 
 
 if __name__ == "__main__":
