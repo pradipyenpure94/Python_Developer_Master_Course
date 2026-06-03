@@ -18,11 +18,12 @@ def find_minimum_number(nums: list[int]) -> int:
         raise ValueError("List cannot be empty.")
 
     min_num = nums[0]
-
-    for number in nums[1:]:
+    index = 1
+    while index < len(nums):
+        number = nums[index]
         if number < min_num:
             min_num = number
-
+        index += 1
     return min_num
 
 
