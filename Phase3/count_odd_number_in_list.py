@@ -3,15 +3,20 @@
 
 def count_odd_numbers(nums: list[int]) -> int:
     """
-    Return the count of odd numbers in list.
+    Return the number of odd integers in list.
 
     Args:
-        nums list[int]: Input numbers list.
+        nums (list[int]): Input numbers list.
 
     Returns:
-        int: Count of odd numbers in list.
+        int: Number of odd integers in the list.
     """
-    return sum(1 for number in nums if number % 2 == 1)
+    count = 0
+
+    for number in nums:
+        if number % 2 == 1:
+            count += 1
+    return count
 
 
 if __name__ == "__main__":
