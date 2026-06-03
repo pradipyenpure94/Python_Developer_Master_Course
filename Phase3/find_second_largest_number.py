@@ -19,14 +19,18 @@ def find_second_largest_number(nums: list[int]) -> int:
             "Need at least two distinct numbers to find second largest.")
 
     largest_num = second_largest_num = float('-inf')
+    index = 0
 
-    for number in nums:
+    while index < len(nums):
+        number = nums[index]
         if number > largest_num:
             second_largest_num = largest_num
             largest_num = number
 
         elif number > second_largest_num:
             second_largest_num = number
+
+        index += 1
 
     return second_largest_num
 
