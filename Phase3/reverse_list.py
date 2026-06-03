@@ -8,7 +8,7 @@ def reverse_list(nums: list[int]) -> list[int]:
     Returns:
         list[int]: Reversed list.
     """
-    return nums[::-1]
+    return list(reversed(nums))
 
 
 if __name__ == "__main__":
