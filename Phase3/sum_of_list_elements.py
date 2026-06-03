@@ -11,7 +11,11 @@ def sum_of_list_numbers(nums: list[int]) -> int:
     Returns:
         int: sum of list elements.
     """
-    return sum(number for number in nums)
+    total = 0
+
+    for number in nums:
+        total += number
+    return total
 
 
 if __name__ == "__main__":
