@@ -16,7 +16,14 @@ def find_minimum_number(nums: list[int]) -> int:
     """
     if not nums:
         raise ValueError("List cannot be empty.")
-    return min(nums)
+
+    min_num = nums[0]
+
+    for number in nums[1:]:
+        if number < min_num:
+            min_num = number
+
+    return min_num
 
 
 if __name__ == "__main__":
