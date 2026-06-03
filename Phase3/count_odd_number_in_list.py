@@ -12,14 +12,16 @@ def count_odd_numbers(nums: list[int]) -> int:
         int: Number of odd integers in the list.
     """
     count = 0
+    index = 0
 
-    for number in nums:
-        if number % 2 == 1:
+    while index < len(nums):
+        if nums[index] % 2 == 1:
             count += 1
+        index += 1
     return count
 
 
 if __name__ == "__main__":
-    numbers = [1, 2, 3, 4, 5, 6]
+    numbers = [1, 2, 3, 4, 5, 6, 7]
     result = count_odd_numbers(nums=numbers)
     print(f"Count of odd numbers: {result}")
