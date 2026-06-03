@@ -13,7 +13,12 @@ def find_common_elements(list1: list[int], list2: list[int]) -> list[int]:
         list[int]: Elements present in both lists.
     """
     list2 = set(list2)
-    return [number for number in list1 if number in list2]
+    common_elements = []
+
+    for number in list1:
+        if number in list2:
+            common_elements.append(number)
+    return common_elements
 
 
 if __name__ == "__main__":
