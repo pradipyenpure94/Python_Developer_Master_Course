@@ -14,10 +14,15 @@ def find_common_elements(list1: list[int], list2: list[int]) -> list[int]:
     """
     list2 = set(list2)
     common_elements = []
+    index = 0
 
-    for number in list1:
+    while index < len(list1):
+        number = list1[index]
         if number in list2:
             common_elements.append(number)
+
+        index += 1
+
     return common_elements
 
 
