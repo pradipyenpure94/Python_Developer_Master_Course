@@ -11,7 +11,12 @@ def count_even_numbers(nums: list[int]) -> int:
     Returns:
         int: Count of even numbers list.
     """
-    return sum(1 for number in nums if number % 2 == 0)
+    count = 0
+
+    for number in nums:
+        if number % 2 == 0:
+            count += 1
+    return count
 
 
 if __name__ == "__main__":
