@@ -12,9 +12,11 @@ def sum_of_list_numbers(nums: list[int]) -> int:
         int: sum of list elements.
     """
     total = 0
+    index = 0
 
-    for number in nums:
-        total += number
+    while index < len(nums):
+        total += nums[index]
+        index += 1
     return total
 
 
