@@ -12,10 +12,12 @@ def count_even_numbers(nums: list[int]) -> int:
         int: Count of even numbers list.
     """
     count = 0
+    index = 0
 
-    for number in nums:
-        if number % 2 == 0:
+    while index < len(nums):
+        if nums[index] % 2 == 0:
             count += 1
+        index += 1
     return count
 
 
