@@ -15,14 +15,19 @@ def find_smallest_number(nums: list[int]) -> int:
             to find second smallest number.")
 
     smallest_number = second_smallest_number = float('inf')
+    index = 0
 
-    for number in nums:
+    while index < len(nums):
+        number = nums[index]
+
         if number < smallest_number:
             second_smallest_number = smallest_number
             smallest_number = number
 
         elif number < second_smallest_number:
             second_smallest_number = number
+
+        index += 1
 
     return second_smallest_number
 
