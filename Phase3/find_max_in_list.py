@@ -12,10 +12,15 @@ def find_max_nums(nums: list[int]) -> int:
         int: Maximum number in list.
     """
     max_num = nums[0]
+    index = 0
 
-    for number in nums:
+    while index < len(nums):
+        number = nums[index]
         if number > max_num:
             max_num = number
+
+        index += 1
+
     return max_num
 
 
