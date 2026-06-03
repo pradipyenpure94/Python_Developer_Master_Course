@@ -11,7 +11,20 @@ def remove_duplicate_numbers(numbers: list[int]) -> list[int]:
     Returns:
         list[int]: Unique numbers list.
     """
-    return list(dict.fromkeys(numbers))
+    seen = set()
+    unique_numbers = []
+    index = 0
+
+    while index < len(numbers):
+        number = numbers[index]
+
+        if number not in seen:
+            unique_numbers.append(number)
+            seen.add(number)
+
+        index += 1
+
+    return unique_numbers
 
 
 if __name__ == "__main__":
