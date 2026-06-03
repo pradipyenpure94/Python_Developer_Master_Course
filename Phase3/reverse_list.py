@@ -8,12 +8,15 @@ def reverse_list(nums: list[int]) -> list[int]:
     Returns:
         list[int]: Reversed list.
     """
-    reversed_nums = []
-    index = len(nums) - 1
+    reversed_nums = nums[:]
+    left = 0
+    right = len(reversed_nums) - 1
 
-    while index >= 0:
-        reversed_nums.append(nums[index])
-        index -= 1
+    while left < right:
+        reversed_nums[left], reversed_nums[right] = reversed_nums[right],\
+            reversed_nums[left]
+        left += 1
+        right -= 1
 
     return reversed_nums
 
