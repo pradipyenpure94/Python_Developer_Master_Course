@@ -3,7 +3,7 @@
 
 def sort_list_ascending_order(nums: list[int]) -> list[int]:
     """
-    Sort list ascending order.
+    Return a list sorted in ascending order using sorted().
 
     Args:
         nums (list[int]): Input numbers list.
@@ -11,21 +11,7 @@ def sort_list_ascending_order(nums: list[int]) -> list[int]:
     Returns:
         list[int]: Sorted list in ascending order.
     """
-    # Implement bubble sort with early exit optimization
-    n = len(nums)
-    nums = nums[:]
-
-    for i in range(n):
-        swapped = False
-
-        for j in range(n - i - 1):
-            if nums[j] > nums[j + 1]:
-                nums[j], nums[j + 1] = nums[j + 1], nums[j]
-                swapped = True
-
-        if not swapped:
-            break
-    return nums
+    return sorted(nums)
 
 
 if __name__ == "__main__":
