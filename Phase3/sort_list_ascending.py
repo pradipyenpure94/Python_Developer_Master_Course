@@ -3,7 +3,7 @@
 
 def sort_list_ascending_order(nums: list[int]) -> list[int]:
     """
-    Return a list sorted in ascending order using sorted().
+    Return a list sorted in ascending order using sort().
 
     Args:
         nums (list[int]): Input numbers list.
@@ -11,7 +11,9 @@ def sort_list_ascending_order(nums: list[int]) -> list[int]:
     Returns:
         list[int]: Sorted list in ascending order.
     """
-    return sorted(nums)
+    nums = nums[:]
+    nums.sort()
+    return nums
 
 
 if __name__ == "__main__":
