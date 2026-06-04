@@ -11,8 +11,15 @@ def split_even_odd_lists(nums: list[int]) -> tuple[list[int], list[int]]:
     Returns:
         tuple[list[int], list[int]]: A tuple contain even and odd lists.
     """
-    even_nums = [num for num in nums if num % 2 == 0]
-    odd_nums = [num for num in nums if num % 2 == 1]
+    even_nums = []
+    odd_nums = []
+
+    for number in nums:
+        if number % 2 == 0:
+            even_nums.append(number)
+        else:
+            odd_nums.append(number)
+
     return even_nums, odd_nums
 
 
