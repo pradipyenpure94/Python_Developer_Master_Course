@@ -13,12 +13,16 @@ def split_even_odd_lists(nums: list[int]) -> tuple[list[int], list[int]]:
     """
     even_nums = []
     odd_nums = []
+    index = 0
 
-    for number in nums:
+    while index < len(nums):
+        number = nums[index]
         if number % 2 == 0:
             even_nums.append(number)
         else:
             odd_nums.append(number)
+
+        index += 1
 
     return even_nums, odd_nums
 
