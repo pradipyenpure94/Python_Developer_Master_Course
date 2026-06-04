@@ -12,7 +12,7 @@ def merge_two_lists(list1: list[int], list2: list[int]) -> list[int]:
     Returns:
         list[int]: A new list containing elements from both input lists.
     """
-    return list1 + list2
+    return [*list1, *list2]
 
 
 if __name__ == "__main__":
