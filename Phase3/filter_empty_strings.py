@@ -4,8 +4,10 @@
 def filter_empty_strings(words: list[str]) -> list[str]:
     """
     Return a new list with all empty strings removed.
+
     Args:
         words (list[str]): Input words list.
+
     Returns:
         list[str]: A new list containing only non-empty strings.
     """
