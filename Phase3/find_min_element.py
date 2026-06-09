@@ -15,7 +15,7 @@ def find_min_element(nums: list[int]) -> int | None:
     """
     if not nums:
         return None
-    return reduce(lambda x, y: x if x < y else y, nums)
+    return reduce(min, nums)
 
 
 if __name__ == "__main__":
