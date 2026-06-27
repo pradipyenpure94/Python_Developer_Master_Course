@@ -1,7 +1,5 @@
 """Find GCD and LCM of two numbers."""
 
-from math import gcd, lcm
-
 
 def find_gcd(num1: int, num2: int) -> int:
     """
@@ -12,9 +10,12 @@ def find_gcd(num1: int, num2: int) -> int:
         num2 (int): Second input number.
 
     Returns:
-        int: Greatest common divisor of input two numbers.
+        int: Greatest common divisor of the two input numbers.
     """
-    # Uses the Euclidean algoritham to find GCD.
+    # Uses the Euclidean algorithm to find GCD.
+    num1 = abs(num1)
+    num2 = abs(num2)
+
     while num2:
         num1, num2 = num2, num1 % num2
     return num1
@@ -29,13 +30,16 @@ def find_lcm(num1: int, num2: int) -> int:
         num2 (int): Second input number.
 
     Returns:
-        int: Least common multiple of two input numbers.
+        int: Least common multiple of the two input numbers.
     """
+    num1 = abs(num1)
+    num2 = abs(num2)
+
     # Avoids division by zero, if both inputs are zero.
     if num1 == 0 or num2 == 0:
         return 0
-    # LCM formulae: (a * b) / GCD(a , b)
-    return (num1 * num2) / find_gcd(num1=num1, num2=num2)
+    # LCM formula: (a * b) // GCD(a , b)
+    return (num1 * num2) // find_gcd(num1=num1, num2=num2)
 
 
 def main() -> None:
