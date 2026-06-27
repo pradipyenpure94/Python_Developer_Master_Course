@@ -14,7 +14,10 @@ def find_gcd(num1: int, num2: int) -> int:
     Returns:
         int: Greatest common divisor of input two numbers.
     """
-    return gcd(num1, num2)
+    # Uses the Euclidean algoritham to find GCD.
+    while num2:
+        num1, num2 = num2, num1 % num2
+    return num1
 
 
 def find_lcm(num1: int, num2: int) -> int:
@@ -28,7 +31,11 @@ def find_lcm(num1: int, num2: int) -> int:
     Returns:
         int: Least common multiple of two input numbers.
     """
-    return lcm(num1, num2)
+    # Avoids division by zero, if both inputs are zero.
+    if num1 == 0 or num2 == 0:
+        return 0
+    # LCM formulae: (a * b) / GCD(a , b)
+    return (num1 * num2) / find_gcd(num1=num1, num2=num2)
 
 
 def main() -> None:
