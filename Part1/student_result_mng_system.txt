@@ -1,0 +1,3 @@
+roll_no,name,python,database,github,total,percentage,result
+1,Revati sule,96.0,45.0,63.0,204.0,68.0,Pass
+3,suman,45.0,12.0,56.0,113.0,37.67,Pass

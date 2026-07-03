@@ -13,6 +13,7 @@ from pathlib import Path
 FILE_PATH = "Part1/student_result_mng_system.txt"
 FILE_NAME = Path(FILE_PATH).name
 HEADERS = "roll_no,name,python,database,github,total,percentage,result\n"
+TOTAL_MARKS = 300
 
 
 def create_txt_file() -> None:
@@ -35,31 +36,47 @@ def save_students(students: list[str]) -> None:
     with open(file=FILE_PATH, mode="w", encoding="utf-8") as file_obj:
         file_obj.write(HEADERS)
         for record in students:
-            file_obj.write(record)
+            file_obj.write(record + "\n")
 
 
-def calculate_result(python: float, db: float,
-                     github: float) -> tuple[float, float, str]:
+def parse_student(student: str) -> list[str]:
+    """Return the parse student record as a list of fields."""
+    return student.split(",")
+
+
+def build_student_record(
+    roll_no: int | str, name: str, python_marks: float, db_marks: float,
+                github_marks: float) -> str:
     """
-    Return the total marks, percentage of marks and result.
+    Build a student record based on user inputs.
 
     Args:
-        python (float): Input Python subject marks.
-        github (float): Input Github subject marks.
-        db (float): Input Database subject marks.
+        roll_no (int): Auto generate student Id.
+        name (str): Input student name.
+        python_marks (float): Input Python marks.
+        db_marks (float): Input Database marks.
+        github_marks (float): Input Github marks.
 
     Returns:
-        tuple[float, float, str]: A new tuple containing the total marks,
-        percentage of marks and result like Pass or Fail
+        str: Build a record.
     """
-    TOTAL_MARKS = 300
     # Total subject marks.
-    total = python + db + github
-    # Percentage of marks.
+    total = python_marks + db_marks + github_marks
     percentage = (total / TOTAL_MARKS) * 100
     # Student result: Pass / Fail.
     result = "Pass" if percentage >= 35 else "Fail"
-    return total, percentage, result
+    return ",".join(
+        [
+            str(roll_no),
+            name,
+            str(python_marks),
+            str(db_marks),
+            str(github_marks),
+            str(total),
+            str(round(percentage, 2)),
+            result
+        ]
+    )
 
 
 def next_gen_student_id(students: list[str]) -> int:
@@ -71,54 +88,51 @@ def next_gen_student_id(students: list[str]) -> int:
     """
     if not students:
         return 1
-    return max(int(record.split(",")[0]) for record in students
-               if record and record.split(",") and record.split(",")[0]) + 1
-
-
-def add_new_record_line(students: list[str]) -> str:
-    """Append new student record line."""
-    record = ""
-
-    # Auto generate next student ID.
-    roll_no = next_gen_student_id(students=students)
-    record += str(roll_no) + ","
-    try:
-        # Student name
-        name = input("Enter student name: ")
-        record += name + ","
-
-        # Student subject marks.
-        python_marks = float(input("Enter python marks: "))
-        record += str(python_marks) + ","
-
-        db_marks = float(input("Enter Database marks: "))
-        record += str(db_marks) + ","
-
-        github_marks = float(input("Enter github marks: "))
-        record += str(github_marks) + ","
-
-        total, percentage, result = calculate_result(python=python_marks,
-                                                     db=db_marks,
-                                                     github=github_marks)
-        record += str(total) + ","
-        record += str(round(percentage, 2)) + ","
-        record += result + "\n"
-        return record
-    except ValueError as error:
-        print(f"Error: {error}")
-    except KeyboardInterrupt:
-        print("\nProgram interrupted.")
-    finally:
-        print("Operation completed.")
+    return max(int(parse_student(student)[0]) for student in students) + 1
 
 
 def add_student(students: list[str]) -> None:
     """Add student new record into .txt file."""
-    record = add_new_record_line(students=students)
-    if record is not None:
+
+    # Auto generate next student ID.
+    roll_no = next_gen_student_id(students=students)
+
+    try:
+        # Student name
+        name = input("Enter student name: ").strip()
+        if not name:
+            raise ValueError("Name cannot be empty.")
+
+        # Student subject marks.
+        python_marks = float(input("Enter python marks: "))
+        if not 0 <= python_marks <= 100:
+            raise ValueError("Python marks must be between 0 and 100.")
+
+        db_marks = float(input("Enter Database marks: "))
+        if not 0 <= db_marks <= 100:
+            raise ValueError("Database marks must be between 0 and 100.")
+
+        github_marks = float(input("Enter github marks: "))
+        if not 0 <= github_marks <= 100:
+            raise ValueError("Github marks must be between 0 and 100.")
+
+        # Build a student record
+        record = build_student_record(
+            roll_no=roll_no, name=name,
+            python_marks=python_marks,
+            db_marks=db_marks,
+            github_marks=github_marks)
+
+    except ValueError as error:
+        print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nProgram interrupted.")
+    else:
         students.append(record)
         save_students(students=students)
         print("Added a new student record successfully.")
+    finally:
+        print("Operation completed.")
 
 
 def view_students(students: list[str]) -> None:
@@ -126,15 +140,18 @@ def view_students(students: list[str]) -> None:
     if not students:
         print("Student record not found.")
     else:
-        print("-" * 66)
-        print(f"|{'Roll|\n|No. ':<4}|{'Name':<15}|{'Python':<7}|{'DB':<5}|"
-              f"{'GitHub':<7}|{'Total':<5}|{'Per (%)':<8}|{'Result':<6}|")
-        print("-" * 66)
-        for rec in students:
-            rec = rec.split(",")
-            print(f"|{rec[0]:>4}|{rec[1]:<15}|{rec[2]:>7}|{rec[3]:>5}|"
-                  f"{rec[4]:>7}|{rec[5]:>5}|{rec[6]:>8}|{rec[7]:<6}|")
-        print("-" * 66)
+        print("-" * 70)
+        print(
+            f"|{'Roll No.':<8}|{'Name':<15}|{'Python':<7}|{'DB':<5}|"
+            f"{'GitHub':<7}|{'Total':<5}|{'Per (%)':<8}|{'Result':<6}|")
+        print("-" * 70)
+        for student in students:
+            record = parse_student(student=student)
+            print(
+                f"|{record[0]:>8}|{record[1]:<15}|{record[2]:>7}|"
+                f"{record[3]:>5}|{record[4]:>7}|{record[5]:>5}|"
+                f"{record[6]:>8}|{record[7]:<6}|")
+        print("-" * 70)
 
 
 def search_student(students: list[str]) -> None:
@@ -145,11 +162,12 @@ def search_student(students: list[str]) -> None:
     except ValueError as error:
         print(f"Error: {error}")
     else:
-        for rec in students:
-            rec = rec.split(",")
-            if rec[0] == str(student_id):
-                print(f"Roll No.: {rec[0]}\n"
-                      f"Name: {rec[1]}")
+        for student in students:
+            record = parse_student(student=student)
+            if record[0] == str(student_id):
+                print(
+                    f"Roll No.: {record[0]}\n"
+                    f"Name: {record[1]}")
                 break
         else:
             print("Student record not found.")
@@ -161,34 +179,42 @@ def update_student(students: list[str]) -> None:
     """Update editable fields into .txt file."""
     try:
         student_id = int(input("Enter student ID to update: "))
-        update_record = ""
-        for index, rec in enumerate(students):
-            record = rec.split(",")
+
+        for index, student in enumerate(students):
+            record = parse_student(student=student)
             if record and record[0] == str(student_id):
-                update_record += record[0] + ","
                 # Update student name
-                record[1] = input("Update a new name: ")
-                update_record += record[1] + ","
+                record[1] = input("Update a new name: ").strip()
+                if not record[1]:
+                    raise ValueError("Name cannot be empty.")
+
                 # Update Python marks
                 record[2] = float(input("Update a new Python marks: "))
-                update_record += str(record[2]) + ","
+                if not 0 <= record[2] <= 100:
+                    raise ValueError("Python marks must be between 0 and 100.")
+
                 # Update Databse marks
                 record[3] = float(input("Update a new Database marks: "))
-                update_record += str(record[3]) + ","
+                if not 0 <= record[3] <= 100:
+                    raise ValueError("Database marks must be between 0 and 100.")
+
                 # Update Github marks
                 record[4] = float(input("Update a new Github marks: "))
-                update_record += str(record[4]) + ","
+                if not 0 <= record[4] <= 100:
+                    raise ValueError("Github marks must be between 0 and 100.")
 
-                total, percentage, result = calculate_result(python=record[2],
-                                                             db=record[3],
-                                                             github=record[4])
+                # Build a student record
+                update_record = build_student_record(
+                    roll_no=record[0],
+                    name=record[1],
+                    python_marks=record[2],
+                    db_marks=record[3],
+                    github_marks=record[4])
 
-                update_record += str(total) + ","
-                update_record += str(round(percentage, 2)) + ","
-                update_record += result + "\n"
-                students[index] = update_record
                 # Update record into .txt File.
+                students[index] = update_record
                 save_students(students=students)
+                print("Updated record successfully.")
                 break
         else:
             print("Student record not found.")
@@ -197,8 +223,6 @@ def update_student(students: list[str]) -> None:
         print(f"Error: {error}")
     except KeyboardInterrupt:
         print("\nProgram interrupted.")
-    else:
-        print("Updated record successfully.")
     finally:
         print("Operation completed.")
 
@@ -207,8 +231,8 @@ def delete_student(students: list[str]) -> None:
     """Delete a student record by student ID from .txt File."""
     try:
         delete_student_id = int(input("Enter a student ID to delete: "))
-        for index, rec in enumerate(students):
-            record = rec.split(",")
+        for index, student in enumerate(students):
+            record = parse_student(student=student)
             if record[0] == str(delete_student_id):
                 students.pop(index)
                 save_students(students=students)
