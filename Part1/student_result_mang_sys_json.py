@@ -104,13 +104,11 @@ def build_student_record(
         "roll_no": roll_no,
         "name": name,
         "subjects":
-            [
-                {
-                    "python_marks": python_marks,
-                    "db_marks": db_marks,
-                    "github_marks": github_marks
-                }
-            ],
+            {
+                "python": python_marks,
+                "database": db_marks,
+                "github": github_marks
+            },
         "total": total,
         "percentage": round(percentage, 2),
         "result": result
@@ -188,13 +186,12 @@ def view_students(students: list[dict[str, str]]) -> None:
         f"| {'Github':>5}| {'Total':>5} | {'Per (%)':>7} | {'Result':>7} |")
     print("-" * 88)
     for student in students:
-        for subject in student.get('subjects'):
-            print(f"| {student.get('roll_no'):>7} | {student.get('name'):<20}"
-                f" | {subject['python_marks']:>5} | {subject['db_marks']:>7} |"
-                f" {subject['github_marks']:>5} | {student.get('total'):>5} | "
-                f"{student.get('percentage'):>7} | {student.get('result'):<7}"
-                f" | ")
-
+        subject = student["subjects"]
+        print(f"| {student.get('roll_no'):>7} | {student.get('name'):<20}"
+            f" | {subject['python']:>5} | {subject['database']:>7} |"
+            f" {subject['github']:>5} | {student.get('total'):>5} | "
+            f"{student.get('percentage'):>7} | {student.get('result'):<7}"
+            f" | ")
     print("-" * 88)
 
 
