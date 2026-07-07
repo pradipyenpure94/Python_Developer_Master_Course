@@ -1,5 +1,7 @@
 """Check leap year."""
 
+from calendar import isleap
+
 try:
     year = int(input("Enter a year: "))
 except ValueError:
@@ -7,7 +9,7 @@ except ValueError:
 except KeyboardInterrupt:
     print("\nProgram interrupted.")
 else:
-    if year % 400 == 0 or year % 4 == 0 and year % 100 != 0:
+    if isleap(year=year):
         print(f"{year} is a leap year.")
     else:
         print(f"{year} is not a leap year.")
