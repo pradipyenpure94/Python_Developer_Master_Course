@@ -23,6 +23,8 @@ DUE_DATE = date(2026, 7, 25)
 # Current date.
 TODAY_DATE = date(2026, 7, 2)
 
+is_late_payment = TODAY_DATE > DUE_DATE
+
 
 def calculate_consumption_charges(units: int) -> float:
     """
@@ -37,7 +39,7 @@ def calculate_consumption_charges(units: int) -> float:
 
     if units <= SLAB_1_LIMIT:
         return units * SLAB_1_RATE
-    elif units <= SLAB_2_LIMIT:
+    if units <= SLAB_2_LIMIT:
         return units * SLAB_2_RATE
     return units * SLAB_3_RATE
 
@@ -62,7 +64,7 @@ try:
         raise ValueError("Name cannot be empty.")
 
     # Accept consume units input from the user.
-    units = int(input("Enter the power consumed units (int): "))
+    units = int(input("Enter the units consumed: "))
     if units < 0:
         raise ValueError("Units consumed cannot be negative.")
 
@@ -82,7 +84,7 @@ else:
     gst_amount = calculate_gst(consume_charges=consume_charges)
     other_charges = FIXED_CHARGES + pending_bill_amount
 
-    if TODAY_DATE > DUE_DATE:
+    if is_late_payment:
         other_charges += LATE_PAYMENT_CHARGES
 
     # Total pay bill amount.
@@ -96,7 +98,7 @@ else:
     print(f"GST ({GST}%)                 : {gst_amount:.2f}")
     print(f"Fixed Charges             : {FIXED_CHARGES:.2f}")
     print(f"Pending Amount            : {pending_bill_amount:.2f}")
-    if TODAY_DATE > DUE_DATE:
+    if is_late_payment:
         print(f"Late Payment Fee          : {LATE_PAYMENT_CHARGES:.2f}")
     print(f"Subsidy                   : -{SUBSIDY:.2f}")
     print("-" * 50)
