@@ -14,7 +14,7 @@ VALID_OPERATORS = {
 
 def validate_operator(operator_symbol: str) -> None:
     """
-    Validate the operators.
+    Validate the operator.
 
     Args:
         operator_symbol (str): Input operator symbol.
@@ -26,7 +26,14 @@ def validate_operator(operator_symbol: str) -> None:
         raise ValueError("Please enter the operator symbol.")
     if operator_symbol not in VALID_OPERATORS:
         raise ValueError(
-            "Invalid operators. Please enter the valid operators.")
+            f"Invalid operator. Choose from: {', '.join(
+                sorted(VALID_OPERATORS))}")
+
+
+def validate_divisor(divisor: float) -> None:
+    """Validate the divisor."""
+    if divisor == 0:
+        raise ValueError("Cannot divide by zero.")
 
 
 def perform_operation(
@@ -35,7 +42,7 @@ def perform_operation(
     operator_symbol: str
 ) -> float | int:
     """
-    Perform the arithmetic operations.
+    Perform the selected arithmetic operation.
 
     Args:
         first_number (float): First input number.
@@ -43,7 +50,7 @@ def perform_operation(
         operator_symbol (str): Arithmetic operator.
 
     Returns:
-        float | int: Result of the Arithmetic operation.
+        float | int: Result of the arithmetic operation.
 
     Raises:
         ValueError: If division or modulus by zero is attempted.
@@ -56,16 +63,13 @@ def perform_operation(
         case "*":
             return first_number * second_number
         case "/":
-            if second_number == 0:
-                raise ValueError("Cannot divide by zero.")
+            validate_divisor(divisor=second_number)
             return first_number / second_number
         case "//":
-            if second_number == 0:
-                raise ValueError("Cannot divide by zero.")
+            validate_divisor(divisor=second_number)
             return first_number // second_number
         case "%":
-            if second_number == 0:
-                raise ValueError("Cannot divide by zero.")
+            validate_divisor(divisor=second_number)
             return first_number % second_number
         case "**":
             return first_number ** second_number
