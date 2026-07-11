@@ -5,10 +5,11 @@ import re
 
 
 FILE_PATH = "Part2/Section2/income_tax_calculator_sheet.txt"
-FILE_NAME = Path(FILE_PATH).name
+PATH = Path(FILE_PATH)
+FILE_NAME = PATH.name
 PAN_PATTERN = r"[A-Z]{5}[0-9]{4}[A-Z]$"
-HEADERS = "tax_payer_id, full_name, age, pan_number, mobile, email, " \
-    "annual_income, deductions, tax_rate (%), tax_amount"
+HEADERS = ("tax_payer_id, full_name, age, pan_number, mobile, email, "
+           "annual_income, deductions, tax_rate (%), tax_amount")
 
 # As per the business requirements, defined the age limits,
 # annual income limits, deduction limits, tax slab limits, and tax rate limits.
@@ -25,10 +26,10 @@ MAX_ANNUAL_INCOME = 1000000000  # 10 Crore
 MIN_DEDUCTIONS = 0
 
 # Income tax slabs limits
-SLAB_1_LIMT = 300000
-SLAB_2_LIMT = 700000
-SLAB_3_LIMT = 1000000
-SLAB_4_LIMT = 1500000
+SLAB_1_LIMIT = 300000
+SLAB_2_LIMIT = 700000
+SLAB_3_LIMIT = 1000000
+SLAB_4_LIMIT = 1500000
 
 # Tax rates limits
 SLAB_1_TAX_RATE = 0
@@ -40,7 +41,7 @@ SLAB_5_TAX_RATE = 30
 
 def create_txt_file() -> None:
     """Create the file if it does not exist."""
-    if not Path(FILE_PATH).exists():
+    if not PATH.exists():
         with open(file=FILE_PATH, mode="w", encoding="utf-8") as file_obj:
             file_obj.write(HEADERS)
         print(f"{FILE_NAME} is created successfully.")
@@ -48,7 +49,7 @@ def create_txt_file() -> None:
 
 def load_data() -> list[str]:
     """
-    Fecth all data from .txt File.
+    Fetch all data from .txt File.
 
     Returns:
         list[str]: Fetch all data from .txt File.
@@ -58,10 +59,10 @@ def load_data() -> list[str]:
         return file_obj.readlines()
 
 
-def save_data(tax_payers) -> None:
+def save_data(tax_payers: list[str]) -> None:
     """Save data to the .txt File."""
     with open(file=FILE_PATH, mode="w", encoding="utf-8") as file_obj:
-        file_obj.write("".join(HEADERS) + "\n")
+        file_obj.write(HEADERS + "\n")
         file_obj.writelines(tax_payers)
 
 
@@ -71,7 +72,7 @@ def validate_name(name: str) -> None:
     Validate the name.
 
     Args:
-        name (str): Input name of Tax payer.
+        name (str): Input name of Taxpayer.
 
     Raises:
         ValueError: Name cannot be empty,
@@ -91,14 +92,14 @@ def validate_age(age: int) -> None:
     Validate the age.
 
     Args:
-        age (int): Input age of Tax payer.
+        age (int): Input age of Taxpayer.
 
     Raises:
         ValueError: Age must be within the valid range.
     """
     if not MIN_AGE_LIMIT <= age <= MAX_AGE_LIMIT:
         raise ValueError(
-            "Invalid age. Tax Payer age must be between "
+            "Invalid age. Taxpayer age must be between "
             f"{MIN_AGE_LIMIT} and {MAX_AGE_LIMIT} years."
         )
 
@@ -108,7 +109,7 @@ def validate_pan_number(pan_number: str) -> None:
     Validate the PAN number.
 
     Args:
-        pan_number (str): Input PAN number of Tax payer.
+        pan_number (str): Input PAN number of Taxpayer.
 
     Raises:
         ValueError: Invalid PAN number. Please ensure it is not empty,
@@ -158,7 +159,7 @@ def validate_email(email: str) -> None:
     Validate the email.
 
     Args:
-        email (str): Input email address of Tax payer.
+        email (str): Input email address of Taxpayer.
     """
     if not email:
         raise ValueError("Email address is required.")
@@ -366,40 +367,40 @@ def calculate_tax_amount(taxable_income: float, tax_rate: float) -> float:
     return (taxable_income * tax_rate) / 100
 
 
-def get_tax_rate(annual_income: float) -> float:
+def get_tax_rate(taxable_income: float) -> float:
     """
-    Calculate and return the tax rate based on the taxpayer's annual income.
+    Calculate and return the tax rate based on the taxpayer's taxable income.
 
     Args:
-        annual_income (float): Input of annual income.
+        taxable_income (float): Input of taxable income.
 
     Returns:
         float: Return the tax rate (%).
     """
-    if annual_income <= SLAB_1_LIMT:
+    if taxable_income <= SLAB_1_LIMIT:
         return SLAB_1_TAX_RATE
-    if annual_income <= SLAB_2_LIMT:
+    if taxable_income <= SLAB_2_LIMIT:
         return SLAB_2_TAX_RATE
-    if annual_income <= SLAB_3_LIMT:
+    if taxable_income <= SLAB_3_LIMIT:
         return SLAB_3_TAX_RATE
-    if annual_income <= SLAB_4_LIMT:
+    if taxable_income <= SLAB_4_LIMIT:
         return SLAB_4_TAX_RATE
     return SLAB_5_TAX_RATE
 
 
 def parse_record(record: str) -> list[str]:
     """Return a record in list format."""
-    return record.split(",")
+    return record.strip().split(",")
 
 
-def auto_gen_next_tax_payer_id(tax_payers) -> int:
+def auto_gen_next_tax_payer_id(tax_payers: list[str]) -> int:
     """Generate a new unique taxpayer ID automatically."""
     if not tax_payers:
         return 1
     return max(int(record.split(",")[0]) for record in tax_payers) + 1
 
 
-def buil_new_record(
+def build_new_record(
     tax_payer_id: str,
     full_name: str,
     age: int,
@@ -430,7 +431,7 @@ def buil_new_record(
         total_deductions=total_deductions
     )
     # To get the tax rate
-    tax_rate = get_tax_rate(annual_income=annual_income)
+    tax_rate = get_tax_rate(taxable_income=taxable_income)
     # To get the tax amount
     tax_amount = calculate_tax_amount(
         taxable_income=taxable_income,
@@ -450,7 +451,7 @@ def buil_new_record(
     ]) + "\n"
 
 
-def add_tax_payer(tax_payers) -> None:
+def add_tax_payer(tax_payers: list[str]) -> None:
     """Save the new taxpayer record into the .txt File."""
     try:
         # Accept inputs from user and its validation.
@@ -469,9 +470,9 @@ def add_tax_payer(tax_payers) -> None:
     except ValueError as error:
         print(f"Error: {error}")
     except KeyboardInterrupt:
-        print("\nProgram interrupted.")
+        print("\nOperation cancelled by user.")
     else:
-        new_record = buil_new_record(
+        new_record = build_new_record(
             tax_payer_id=str(tax_payer_id),
             full_name=name,
             age=str(age),
@@ -496,7 +497,7 @@ def view_all_tax_payers(tax_payers: list[str]) -> None:
         tax_payers (list[str]): Retrieve all taxpayer records.
     """
     if not tax_payers:
-        print("Tax payers record not found.")
+        print("No taxpayer records found.")
         return
     print("-" * 85)
     print(
@@ -506,8 +507,8 @@ def view_all_tax_payers(tax_payers: list[str]) -> None:
     for record in tax_payers:
         record = parse_record(record=record)
         print(
-            f"{record[3]:<12} | {record[1]:<20} | {record[6]:>20} | "
-            f"{record[9]:>20}"
+            f"{record[3]:<12} | {record[1]:<20} | {float(record[6]):>20,.2f} | "
+            f"{float(record[9]):>20,.2f}"
         )
     print("-" * 85)
 
@@ -519,19 +520,22 @@ def search_taxpayer(taxpayers: list[str]) -> None:
     Args:
         taxpayers (list[str]): Input of taxpayer records.
     """
-    pan_number = input("Enter the PAN number to search: ").strip()
-
-    for record in taxpayers:
-        record = parse_record(record=record)
-        if record[3] == pan_number:
+    try:
+        pan_number = input("Enter the PAN number to search: ").strip()
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by user.")
+    else:
+        _, record = find_tax_payer(pan_number=pan_number, taxpayers=taxpayers)
+        if record:
             print("Taxpayer details:")
             print(f"Name: {record[1]}")
             print(f"PAN number: {record[3]}")
             print(f"Annual income: {record[6]}")
             print(f"Income Tax: {record[9]}")
-            break
-    else:
-        print("Taxpayer record not found.")
+        else:
+            print(f"PAN: {pan_number} not found.")
+    finally:
+        print("Operation completed.")
 
 
 def update_tax_payer(taxpayers: list[str]) -> None:
@@ -543,17 +547,19 @@ def update_tax_payer(taxpayers: list[str]) -> None:
     """
     try:
         pan_number = input("Enter the PAN number to search: ").strip()
-        for index, record in enumerate(taxpayers):
-            record = parse_record(record=record)
-            if record[3] == pan_number:
-                annual_income = get_annual_income(
-                    prompt="Enter the Annual Income: ")
-                total_deductions = get_total_deductions(
-                    prompt="Enter the total deductions: ",
-                    annual_income=annual_income
-                )
+        index, record = find_tax_payer(
+            pan_number=pan_number,
+            taxpayers=taxpayers
+        )
 
-                update_record = buil_new_record(
+        if record:
+            annual_income = get_annual_income(prompt="Enter the Annual Income: ")
+            total_deductions = get_total_deductions(
+                prompt="Enter the total deductions: ",
+                annual_income=annual_income
+            )
+
+            update_record = build_new_record(
                     tax_payer_id=str(record[0]),
                     full_name=record[1],
                     age=str(record[2]),
@@ -563,17 +569,16 @@ def update_tax_payer(taxpayers: list[str]) -> None:
                     annual_income=annual_income,
                     total_deductions=total_deductions
                 )
-                taxpayers[index] = update_record
-                save_data(tax_payers=taxpayers)
-                print("Updated taxpayer record successfully.")
-                break
+            taxpayers[index] = update_record
+            save_data(tax_payers=taxpayers)
+            print("Updated taxpayer record successfully.")
         else:
-            print("Taxpayer record not found.")
+            print(f"PAN: {pan_number} not found.")
 
     except ValueError as error:
         print(f"Error: {error}")
     except KeyboardInterrupt:
-        print("\nProgram Interrupted.")
+        print("\nOperation cancelled by user.")
     finally:
         print("Operation completed.")
 
@@ -585,16 +590,44 @@ def delete_tax_payer(taxpayers: list[str]) -> None:
     Args:
         taxpayers (list[str]): Input of Taxpayer records.
     """
-    pan_number = input("Enter the PAN number to delete record: ").strip()
-    for index, record in enumerate(taxpayers):
-        record = parse_record(record=record)
-        if record[3] == pan_number:
+    try:
+        pan_number = input("Enter the PAN number to delete record: ").strip()
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by user.")
+    else:
+        index, record = find_tax_payer(pan_number=pan_number, taxpayers=taxpayers)
+        if record:
             taxpayers.pop(index)
             save_data(tax_payers=taxpayers)
             print("Deleted record successfully.")
-            break
-    else:
-        print("Taxpayer record not found.")
+        else:
+            print(f"PAN: {pan_number} not found.")
+    finally:
+        print("Operation completed.")
+
+
+def get_taxable_income(record: list[str]) -> float:
+    """Return the taxable income."""
+    return float(record[6]) - float(record[7])
+
+
+def find_tax_payer(
+    pan_number: str,
+    taxpayers: list[str]
+) -> tuple[int | None, list[str] | None]:
+    """
+    Return the index and taxpayer record.
+    Args:
+        pan_number (str): Input of taxpayer PAN number.
+        taxpayers (list[str]): Input of taxpayer records.
+    Returns:
+        tuple[int | None, list[str] | None]: Find and return the index
+        and taxpayer record"""
+    for index, record in enumerate(taxpayers):
+        record = parse_record(record=record)
+        if record[3] == pan_number:
+            return index, record
+    return None, None
 
 
 def individual_tax_report(taxpayers: list[str]) -> None:
@@ -605,38 +638,35 @@ def individual_tax_report(taxpayers: list[str]) -> None:
         taxpayers (list[str]): Input of taxpayer records.
     """
     if not taxpayers:
-        print("Taxpayers record not found.")
+        print("No taxpayer records found.")
         return
     pan_number = input("Enter the PAN number: ")
-
-    for record in taxpayers:
-        record = parse_record(record=record)
-        if record[3] == pan_number:
-            print("=" * 50)
-            print("Individual Tax Report".center(50))
-            print("=" * 50)
-            print(f"\u25AA Taxpayer ID       : {record[0]}")
-            print(f"\u25AA Full Name         : {record[1]}")
-            print(f"\u25AA Age               : {record[2]}")
-            print(f"\u25AA PAN Number        : {pan_number}")
-            print(f"\u25AA Mobile            : {record[4]}")
-            print(f"\u25AA Email             : {record[5]}")
-            print("-" * 50)
-            print("Income Details:")
-            print("-" * 50)
-            print(f"\u25AA Annual Income     : {record[6]}")
-            print(f"\u25AA Total Deductions  : {record[7]}")
-            print("-" * 50)
-            print("Tax Calculation:")
-            print("-" * 50)
-            taxable_income = float(record[6]) - float(record[7])
-            print(f"\u25AA Taxable Income   : {taxable_income}")
-            print(f"\u25AA Tax Rate (%)     : {record[8]}")
-            print(f"\u25AA Tax Amount       : {record[9]}")
-            print("=" * 50)
-            break
+    _, record = find_tax_payer(pan_number=pan_number, taxpayers=taxpayers)
+    if record:
+        print("=" * 50)
+        print("Individual Tax Report".center(50))
+        print("=" * 50)
+        print(f"\u25AA Taxpayer ID       : {record[0]}")
+        print(f"\u25AA Full Name         : {record[1]}")
+        print(f"\u25AA Age               : {record[2]}")
+        print(f"\u25AA PAN Number        : {pan_number}")
+        print(f"\u25AA Mobile            : {record[4]}")
+        print(f"\u25AA Email             : {record[5]}")
+        print("-" * 50)
+        print("Income Details:")
+        print("-" * 50)
+        print(f"\u25AA Annual Income     : {float(record[6]):.2f}")
+        print(f"\u25AA Total Deductions  : {float(record[7]):.2f}")
+        print("-" * 50)
+        print("Tax Calculation:")
+        print("-" * 50)
+        taxable_income = get_taxable_income(record=record)
+        print(f"\u25AA Taxable Income   : {taxable_income:.2f}")
+        print(f"\u25AA Tax Rate (%)     : {float(record[8]):.2f}")
+        print(f"\u25AA Tax Amount       : {float(record[9]):.2f}")
+        print("=" * 50)
     else:
-        print("Taxpayer record not found.")
+        print(f"PAN: {pan_number} not found.")
 
 
 def all_tax_payers_report(taxpayers: list[str]) -> None:
@@ -647,7 +677,7 @@ def all_tax_payers_report(taxpayers: list[str]) -> None:
         taxpayers (list[str]): Input of Taxpayer records.
     """
     if not taxpayers:
-        print("Taxpayers record not found.")
+        print("No taxpayer records found.")
         return
     print("=" * 165)
     print("ALL TAXPAYER REPORT".center(100))
@@ -659,11 +689,12 @@ def all_tax_payers_report(taxpayers: list[str]) -> None:
     print("-" * 165)
     for record in taxpayers:
         record = parse_record(record=record)
-        taxable_income = float(record[6]) - float(record[7])
+        taxable_income = get_taxable_income(record=record)
         print(
             f"{record[0]:>5} | {record[1]:<25} | {record[2]:>10} | "
-            f"{record[3]:<12} | {record[4]:>12} | {record[6]:>20} | "
-            f"{record[7]:>20} | {taxable_income:>20} | {record[9]:>20}"
+            f"{record[3]:<12} | {record[4]:>12} | {float(record[6]):>20,.2f} | "
+            f"{float(record[7]):>20,.2f} | {taxable_income:>20,.2f} | "
+            f"{float(record[9]):>20,.2f}"
         )
     print("-" * 165)
 
@@ -678,7 +709,7 @@ def display_report_menu() -> None:
         try:
             choice = input("Enter your choice: ")
         except KeyboardInterrupt:
-            print("\nProgram interrupted.")
+            print("\nOperation cancelled by user.")
         else:
             if choice not in {"1", "2", "3"}:
                 print("Invalid choice. Please select a valid option (1-3).")
@@ -688,7 +719,7 @@ def display_report_menu() -> None:
                 all_tax_payers_report(taxpayers=taxpayers)
             elif choice == "3":
                 display_main_menu()
-                break
+                return
         finally:
             print("Operation completed.")
         print("-" * 50)
@@ -698,7 +729,7 @@ def display_main_menu() -> None:
     """Main menu operations."""
     # Create a File if not exist.
     create_txt_file()
-    # Fecth all data from .txt File.
+    # Fetch all data from .txt File.
     tax_payers = load_data()
 
     while True:
@@ -733,7 +764,7 @@ def display_main_menu() -> None:
 
         elif choice == "6":
             display_report_menu()
-            break
+            return
         elif choice == "7":
             print("Exit from operations.")
             break
