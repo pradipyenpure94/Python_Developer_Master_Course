@@ -10,19 +10,48 @@ FILE_PATH = "Part2/Section2/accounts.txt"
 PATH = Path(FILE_PATH)
 FILE_NAME = PATH.name
 
-ACCOUNTS_HEADERS = "account_id, account_number, customer_name, "\
-    "atm_card_number, balance, atm_pin, status, created_date, expiry_date"
-
 # Transactions
-TRANSACTIONS_HEADERS = "transaction_id, account_number, card_number, "\
-    "transaction_type, transaction_amount, available_balance, "\
-    "transaction_status, transaction_date"
-
 TRANX_FILE_PATH = "Part2/Section2/transactions.txt"
 TRANX_PATH = Path(TRANX_FILE_PATH)
 TRANX_FILE = TRANX_PATH.name
 
+# Account headers
+ACCOUNTS_HEADERS = "account_id, account_number, customer_name, "\
+    "atm_card_number, balance, atm_pin, status, created_date, expiry_date"
+
+# Transactions headers
+TRANSACTIONS_HEADERS = "transaction_id, account_number, card_number, "\
+    "transaction_type, transaction_amount, available_balance, "\
+    "transaction_status, transaction_date"
+
+
 BANK_CODE = 976483  # Bank Identification Code
+BANK_NAME = "Canara Bank"
+
+MIN_WITHDRAW_AMOUNT = 100
+MAX_WITHDRAW_AMOUNT = 10000
+WITHDRAW_MULTIPLE = 100
+
+MIN_DEPOSIT_AMOUNT = 100
+DEPOSIT_MULTIPLE = 100
+MAX_DEPOSIT_AMOUNT = 50000
+
+MIN_ACCOUNT_BALANCE = 5000
+MAX_DAILY_WITHDRAW_LIMIT = 20000
+MAX_DAILY_TRANSACTION_COUNT = 10
+
+MAX_PIN_ATTEMPTS = 3
+
+TRANSACTION_TYPE_WITHDRAW = "WITHDRAW"
+
+ACCOUNT_STATUS_ACTIVE = "ACTIVE"
+ACCOUNT_STATUS_INACTIVE = "INACTIVE"
+
+ACCOUNT_STATUS_BLOCKED = "BLOCKED"
+ACCOUNT_STATUS_CLOSED = "CLOSED"
+
+SUCCESS = "SUCCESS"
+FAILSED = "FAILED"
 
 
 def create_accounts_txt_file() -> None:
@@ -30,13 +59,15 @@ def create_accounts_txt_file() -> None:
     if not PATH.exists():
         with open(file=FILE_PATH, mode="w", encoding="utf-8") as file_obj:
             file_obj.write(ACCOUNTS_HEADERS + "\n")
+            print(f"{FILE_NAME} file is created successfully.")
 
 
 def create_transactions_txt_file() -> None:
     """Create a File if not exist."""
     if not TRANX_PATH.exists():
-        with open(file=TRANX_FILE, mode="w", encoding="utf-8") as file_obj:
+        with open(file=TRANX_FILE_PATH, mode="w", encoding="utf-8") as file_obj:
             file_obj.write(TRANSACTIONS_HEADERS + "\n")
+            print(f"{TRANX_FILE} file is created successfully.")
 
 
 def load_accounts_data() -> list[str]:
@@ -48,7 +79,7 @@ def load_accounts_data() -> list[str]:
 
 def load_transactions_data() -> list[str]:
     """Fetch all transactions data from .txt File."""
-    with open(file=TRANX_FILE, mode="r", encoding="utf-8") as file_obj:
+    with open(file=TRANX_FILE_PATH, mode="r", encoding="utf-8") as file_obj:
         file_obj.readline()
         return file_obj.readlines()
 
@@ -62,7 +93,7 @@ def save_accounts_data(accounts: list[str]) -> None:
 
 def save_transactions_data(transactions: list[str]) -> None:
     """Save transactions data to the .txt File."""
-    with open(file=TRANX_FILE, mode="w", encoding="utf-8") as file_obj:
+    with open(file=TRANX_FILE_PATH, mode="w", encoding="utf-8") as file_obj:
         file_obj.write(TRANSACTIONS_HEADERS + "\n")
         file_obj.writelines(transactions)
 
@@ -91,7 +122,7 @@ def build_accounts_record(
             created_date,
             expiry_date
         ]
-    ) + "\n"
+    )
 
 
 def auto_generate_next_account_id(accounts: list[str]) -> int:
@@ -185,7 +216,7 @@ def register_account(accounts: list[str]) -> None:
             atm_card_number=str(atm_card_number),
             balance=str(balance),
             atm_pin=atm_pin,
-            status="INACTIVE",
+            status=ACCOUNT_STATUS_INACTIVE,
             created_date=str(current_date),
             expiry_date=str(current_date + relativedelta(years=5))
             )
@@ -215,7 +246,7 @@ def activate_bank_account(accounts: list[str]) -> None:
                     atm_card_number=record[3],
                     balance=record[4],
                     atm_pin=record[5],
-                    status="ACTIVE",
+                    status=ACCOUNT_STATUS_ACTIVE,
                     created_date=record[7],
                     expiry_date=record[8][:-1]
                 )
@@ -253,17 +284,308 @@ def build_transactions_record(
         ]) + "\n"
 
 
-def main() -> None:
-    """Run the ATM Withdraw Validation."""
+def get_account_record(atm_card_num: int, accounts: list[str]) -> list[int]:
+    """Return the account record."""
+    for index, record in enumerate(accounts):
+        record = record.split(",")
+        atm_num = int(record[3])
+        if atm_num == atm_card_num:
+            return index, record
+
+
+def validate_atm_card_number(atm_card_num: int, accounts: list[str]) -> None:
+    """Validate the ATM card number."""
+    _, account_record = get_account_record(
+        atm_card_num=atm_card_num,
+        accounts=accounts
+    )
+    if account_record[6] != ACCOUNT_STATUS_ACTIVE:
+        raise ValueError(
+            f"Your account is not {ACCOUNT_STATUS_ACTIVE}. "
+            "Please activate it first."
+        )
+
+    if account_record is None or (str(atm_card_num) != account_record[3]):
+        raise ValueError(
+            "Invalid ATM card number. "
+            "Please enter a valid number (16 digits).")
+
+
+def atm_login(accounts: list[str]) -> None:
+    """ATM Login"""
+    try:
+        atm_card_number = int(input("Enter the ATM card number: "))
+        validate_atm_card_number(
+            atm_card_num=atm_card_number,
+            accounts=accounts
+        )
+    except ValueError as error:
+        print(f"Error: {error}")
+    else:
+        main_main(atm_number=atm_card_number)
+
+
+def atm_login_menu() -> None:
+    """Return a ATM Login Menu."""
     # Create File (accounts.txt), if not exist.
     create_accounts_txt_file()
     # Create File (transactions.txt), if not exist.
     create_transactions_txt_file()
 
+    accounts = load_accounts_data()
+    while True:
+        print("-" * 50)
+        print(f"Welcome to the {BANK_NAME} ATM".center(50))
+        print("\n")
+        print("\t\tOperations:")
+        print("\t\t1. Login")
+        print("\t\t2. Exit")
+
+        try:
+            choice = input("\n\nEnter your choice: ")
+        except KeyboardInterrupt:
+            print("Operation cancelled by the user.")
+        else:
+            if choice not in {"1", "2"}:
+                print("Invalid choice. Please select a valid option.(1-2)")
+            elif choice == "2":
+                print("Exit from operation.")
+                break
+            elif choice == "1":
+                atm_login(accounts=accounts)
+
+        print("-" * 50)
+
+
+def get_withdrawal_amount(prompt: str, account_record: list[str]) -> float:
+    """Return a withdrawal amount from user."""
+    while True:
+        try:
+            withdrawal_amount = float(input(prompt))
+            validate_withdrawal_amount(
+                withdrawal_amount=withdrawal_amount,
+                account_record=account_record
+            )
+        except ValueError as error:
+            print(f"Error: {error}")
+        else:
+            return withdrawal_amount
+
+
+def calculate_remaining_balance(
+    available_balance: float,
+    withdrawal_amount: float
+) -> float:
+    """Calculate and return the remining balance."""
+    return available_balance - withdrawal_amount
+
+
+def is_account_status_active(account_record: list[str]) -> bool:
+    """Check whether a bank account status is active or not."""
+    account_status = account_record[6]
+    if account_status == ACCOUNT_STATUS_ACTIVE:
+        return True
+    return False
+
+
+def validate_withdrawal_amount(
+    withdrawal_amount: float,
+    account_record: list[str]
+) -> None:
+    """Validate the withdrawal amount."""
+    if not is_account_status_active(account_record=account_record):
+        raise ValueError("Account is not an active.")
+    if withdrawal_amount < 0:
+        raise ValueError("Amount must be greater than zero.")
+    if withdrawal_amount < MIN_WITHDRAW_AMOUNT:
+        raise ValueError(
+            f"Minimum withdrawal amount is {MIN_WITHDRAW_AMOUNT}.")
+    if withdrawal_amount > MAX_WITHDRAW_AMOUNT:
+        raise ValueError(
+            f"Maximum withdrawal amount is {MAX_WITHDRAW_AMOUNT}.")
+    if not withdrawal_amount % 100 == 0:
+        raise ValueError(f"Amount must be a multiple of {WITHDRAW_MULTIPLE}.")
+
+    # Get the current account balance.
+    current_account_balance = float(account_record[4])
+    # Get the remaining account balance.
+    remaining_balance = calculate_remaining_balance(
+        available_balance=current_account_balance,
+        withdrawal_amount=withdrawal_amount
+    )
+
+    if withdrawal_amount > current_account_balance:
+        raise ValueError("Insufficient account balance.")
+
+    if remaining_balance < MIN_ACCOUNT_BALANCE:
+        raise ValueError(
+            f"Minimum balance of {MIN_ACCOUNT_BALANCE} must be maintained.")
+    if current_account_balance <= 0:
+        raise ValueError("No balance available for withdrawal.")
+
+
+def get_transaction_records(transactions: list[str]) -> list[str]:
+    """Return the transactions record"""
+    return tuple(record.split(",") for record in transactions)
+
+
+def auto_generate_transaction_id(transactions: list[str]) -> str:
+    """Return the auto generated transaction ID."""
+    if not transactions:
+        return "TXN" + str(1).zfill(10)
+    last_transaction = max({int(record[0].split("TXN")[1])
+                            for record in get_transaction_records(
+                                transactions=transactions)}) + 1
+    return "TXN" + str(last_transaction).zfill(10)
+
+
+def atm_withdrawal_cash(
+    atm_number: int,
+    accounts: list[str],
+    transactions: list[str]
+) -> None:
+    """Withdrawal cash amount from ATM."""
+    index, account_record = get_account_record(
+        atm_card_num=atm_number,
+        accounts=accounts
+    )
+
+    print("-" * 50)
+    print(f"{BANK_NAME} ATM".center(50))
+    print("-" * 50)
+    print("Withdraw Cash\n".center(50))
+    print(f"Account Number     : {account_record[1]}")
+    print(f"Customer Name      : {account_record[2]}")
+    available_balance = float(account_record[4])
+    print(f"Available Balnce   : {available_balance:.2f}")
+    print("-" * 50)
+    print("\n")
+    try:
+        withdrawal_amount = get_withdrawal_amount(
+            prompt="Enter the withdrawal amount: ",
+            account_record=account_record,
+        )
+    except ValueError as error:
+        print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by the user.")
+    else:
+        print(f"Withdrawal amount: {withdrawal_amount}")
+        new_trasaction_id = auto_generate_transaction_id(
+            transactions=transactions)
+        remaining_balance = calculate_remaining_balance(
+            available_balance=available_balance,
+            withdrawal_amount=withdrawal_amount
+        )
+        new_transaction_record = build_transactions_record(
+            transaction_id=new_trasaction_id,
+            account_number=account_record[1],
+            card_number=str(atm_number),
+            transaction_type=TRANSACTION_TYPE_WITHDRAW,
+            transaction_amount=str(withdrawal_amount),
+            available_balance=str(remaining_balance),
+            transaction_status=SUCCESS,
+            transaction_date=str(datetime.today())
+        )
+        transactions.append(new_transaction_record)
+        save_transactions_data(transactions=transactions)
+
+        update_account_record = build_accounts_record(
+            account_id=account_record[0],
+            account_number=account_record[1],
+            customer_name=account_record[2],
+            atm_card_number=str(atm_number),
+            balance=str(remaining_balance),
+            atm_pin=account_record[5],
+            status=account_record[6],
+            created_date=account_record[7],
+            expiry_date=account_record[8]
+        )
+        accounts[index] = update_account_record
+        save_accounts_data(accounts=accounts)
+        print(f"Successfully withdraw {withdrawal_amount}.")
+    print("-" * 50)
+    print("\n")
+    print("Note:")
+    print(f"\u25fe Minimum withdrawal : {float(MIN_WITHDRAW_AMOUNT):.2f}")
+    print(
+        f"\u25fe MAximum withdrawal : "
+        f"{float(MAX_WITHDRAW_AMOUNT):.2f} per transaction")
+    print(f"\u25fe Amount must be multiple of {float(WITHDRAW_MULTIPLE):.2f}")
+    print(
+        f"\u25fe Minimum balance after withdrawal: "
+        f"{float(MIN_ACCOUNT_BALANCE):.2f}")
+
+
+def update_available_balance(
+    current_balance: float,
+    deposit_balance: float
+) -> float:
+    """Return a available balance."""
+    return current_balance + deposit_balance
+
+
+def atm_deposit_cash(atm_number: int, accounts: list[str]) -> None:
+    """Deposit cash amount to the ATM"""
+    index, account_record = get_account_record(
+        atm_card_num=atm_number,
+        accounts=accounts
+    )
+    print("-" * 50)
+    print(f"{BANK_NAME} ATM".center(50))
+    print("-" * 50)
+    print("Deposit Cash\n".center(50))
+    print(f"Account Number     : {account_record[1]}")
+    print(f"Customer Name      : {account_record[2]}")
+    current_balance = float(account_record[4])
+    print(f"Current Balance   : {current_balance:.2f}")
+    print("-" * 50)
+    print("\n")
+    try:
+        deposit_amount = float(input("Enter the deposit amount: "))
+    except ValueError as error:
+        print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by the user.")
+    else:
+        print(f"Deposit amount: {deposit_amount}")
+        updated_balance = update_available_balance(
+            current_balance=current_balance,
+            deposit_balance=deposit_amount
+        )
+        update_record = build_accounts_record(
+            account_id=account_record[0],
+            account_number=account_record[1],
+            customer_name=account_record[2],
+            atm_card_number=str(atm_number),
+            balance=str(updated_balance),
+            atm_pin=account_record[5],
+            status=account_record[6],
+            created_date=account_record[7],
+            expiry_date=account_record[8]
+        )
+        accounts[index] = update_record
+        save_accounts_data(accounts=accounts)
+
+    print("-" * 50)
+    print("\n")
+    print("Note:")
+    print(f"\u25fe Minimum deposit : {float(MIN_DEPOSIT_AMOUNT):.2f}")
+    print(
+        f"\u25fe Maximum deposit : "
+        f"{float(MAX_DEPOSIT_AMOUNT):.2f} per transaction")
+    print(f"\u25fe Amount must be multiple of {float(DEPOSIT_MULTIPLE):.2f}")
+    print("-" * 50)
+    print("\nStatus :\n")
+    print("Deposit successful!")
+    print(f"Updated Balance: {updated_balance}")
+
+
+def main_main(atm_number: int) -> None:
+    """Run the ATM Withdraw Validation."""
     # Fetch all accounts data.
     accounts = load_accounts_data()
     transactions = load_transactions_data()
-
     while True:
         print("Operations Menu:")
         print("1. Register Account")
@@ -295,10 +617,17 @@ def main() -> None:
                 activate_bank_account(accounts=accounts)
 
             elif choice == "3":
-                pass
+                atm_withdrawal_cash(
+                    atm_number=atm_number,
+                    accounts=accounts,
+                    transactions=transactions
+                )
 
             elif choice == "4":
-                pass
+                atm_deposit_cash(
+                    atm_number=atm_number,
+                    accounts=accounts
+                )
 
             elif choice == "5":
                 pass
@@ -316,4 +645,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    atm_login_menu()
