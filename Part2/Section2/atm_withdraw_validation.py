@@ -581,11 +581,67 @@ def atm_deposit_cash(atm_number: int, accounts: list[str]) -> None:
     print(f"Updated Balance: {updated_balance}")
 
 
+def atm_balance_enquiry(atm_number: int, accounts: list[str]) -> None:
+    """Check the balance in your account."""
+    _, account_record = get_account_record(
+        atm_card_num=atm_number,
+        accounts=accounts
+    )
+    print("-" * 50)
+    print(f"{BANK_NAME} ATM.".center(50))
+    print("-" * 50)
+    print("Balance Enquiry".center(50))
+    print("\n")
+    print(f"Account Number: {account_record[1]}")
+    print(f"Customer Name: {account_record[2]}")
+    print("\n")
+    print("-" * 50)
+    print("\n")
+    print(f"Available Balance: {float(account_record[4]):.2f}")
+    print("\n")
+    print("-" * 50)
+    print("\nStatus:")
+    print("\nBalance Displayed successfully.")
+    print("-" * 50)
+
+
+def atm_bank_statement(
+    atm_number: int,
+    accounts: list[str],
+    transactions: list[str]
+) -> None:
+    """Displayed the ATM bank statement."""
+    _, account_record = get_account_record(atm_card_num=atm_number, accounts=accounts)
+    transaction_records = get_transaction_records(transactions=transactions)
+    filtered_records = [record for record in transaction_records
+                        if str(atm_number) == record[2]]
+    if not filtered_records:
+        print("Not available entries.")
+        return
+    print("-" * 100)
+    print(f"{BANK_NAME} ATM".center(100))
+    print("-" * 100)
+    print(f"Account Number: {account_record[1]}")
+    print(f"Customer Name: {account_record[2]}")
+    print(f"ATM Number: {atm_number}")
+    print("-" * 100)
+    print(
+        f"{'Txn ID':<20}  {'Type':<10}  {'Amount':>20}  {'Status':<10} "
+        f" {'Date & Time:':<20}")
+    print("-" * 100)
+    for record in filtered_records[:5]:
+        print(
+            f"{record[0]:<20}  {record[3]:<10}  {record[4]:>20}  "
+            f"{record[6]:<10}  {record[7]:<20}")
+    print("-" * 100)
+
+
 def main_main(atm_number: int) -> None:
     """Run the ATM Withdraw Validation."""
     # Fetch all accounts data.
     accounts = load_accounts_data()
     transactions = load_transactions_data()
+
     while True:
         print("Operations Menu:")
         print("1. Register Account")
@@ -630,10 +686,14 @@ def main_main(atm_number: int) -> None:
                 )
 
             elif choice == "5":
-                pass
+                atm_balance_enquiry(atm_number=atm_number, accounts=accounts)
 
             elif choice == "6":
-                pass
+                atm_bank_statement(
+                    atm_number=atm_number,
+                    accounts=accounts,
+                    transactions=transactions
+                )
 
             elif choice == "7":
                 pass
