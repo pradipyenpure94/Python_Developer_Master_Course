@@ -1,0 +1,1 @@
+transaction_id, account_number, card_number, transaction_type, transaction_amount, available_balance, transaction_status, transaction_date
