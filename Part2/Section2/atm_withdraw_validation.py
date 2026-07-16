@@ -26,7 +26,7 @@ TRANSACTIONS_HEADERS = "transaction_id, account_number, card_number, "\
 
 
 BANK_CODE = 976483  # Bank Identification Code
-BANK_NAME = "Canara Bank"
+BANK_NAME = "Canara Bank ATM"
 
 MIN_WITHDRAW_AMOUNT = 100
 MAX_WITHDRAW_AMOUNT = 10000
@@ -335,7 +335,7 @@ def atm_login_menu() -> None:
     accounts = load_accounts_data()
     while True:
         print("-" * 50)
-        print(f"Welcome to the {BANK_NAME} ATM".center(50))
+        print(f"Welcome to the {BANK_NAME}".center(50))
         print("\n")
         print("\t\tOperations:")
         print("\t\t1. Login")
@@ -451,7 +451,7 @@ def atm_withdrawal_cash(
     )
 
     print("-" * 50)
-    print(f"{BANK_NAME} ATM".center(50))
+    print(f"{BANK_NAME}".center(50))
     print("-" * 50)
     print("Withdraw Cash\n".center(50))
     print(f"Account Number     : {account_record[1]}")
@@ -532,7 +532,7 @@ def atm_deposit_cash(atm_number: int, accounts: list[str]) -> None:
         accounts=accounts
     )
     print("-" * 50)
-    print(f"{BANK_NAME} ATM".center(50))
+    print(f"{BANK_NAME}".center(50))
     print("-" * 50)
     print("Deposit Cash\n".center(50))
     print(f"Account Number     : {account_record[1]}")
@@ -588,7 +588,7 @@ def atm_balance_enquiry(atm_number: int, accounts: list[str]) -> None:
         accounts=accounts
     )
     print("-" * 50)
-    print(f"{BANK_NAME} ATM.".center(50))
+    print(f"{BANK_NAME}.".center(50))
     print("-" * 50)
     print("Balance Enquiry".center(50))
     print("\n")
@@ -619,7 +619,7 @@ def atm_bank_statement(
         print("Not available entries.")
         return
     print("-" * 100)
-    print(f"{BANK_NAME} ATM".center(100))
+    print(f"{BANK_NAME}".center(100))
     print("-" * 100)
     print(f"Account Number: {account_record[1]}")
     print(f"Customer Name: {account_record[2]}")
@@ -633,6 +633,89 @@ def atm_bank_statement(
         print(
             f"{record[0]:<20}  {record[3]:<10}  {record[4]:>20}  "
             f"{record[6]:<10}  {record[7]:<20}")
+    print("-" * 100)
+
+
+def validate_atm_pin(atm_pin: str) -> str:
+    """Validate the ATM pin."""
+    if len(atm_pin) != 4:
+        raise ValueError("An ATM pin should be 4 digits.")
+    if not atm_pin.isdigit():
+        raise ValueError("An ATM PIN should be in digits.")
+
+
+def get_atm_pin(prompts: str) -> str:
+    """Get the an ATM PIN from user."""
+    while True:
+        try:
+            atm_pin = input(prompts)
+            validate_atm_pin(atm_pin=atm_pin)
+        except ValueError as errror:
+            print(f"Error: {errror}")
+        else:
+            return atm_pin
+
+
+def atm_change_pin(atm_number: int, accounts: list[str]) -> None:
+    """Changing to the ATM PIN from user."""
+    index, account_record = get_account_record(
+        atm_card_num=atm_number,
+        accounts=accounts
+    )
+    atm_pin = get_atm_pin("Enter the new ATM pin: ").strip()
+    update_record = build_accounts_record(
+        account_id=account_record[0],
+        account_number=account_record[1],
+        customer_name=account_record[2],
+        atm_card_number=str(atm_number),
+        balance=account_record[4],
+        atm_pin=atm_pin,
+        status=account_record[6],
+        created_date=account_record[7],
+        expiry_date=account_record[8]
+    )
+    accounts[index] = update_record
+    save_accounts_data(accounts=accounts)
+    print("Successfully changed the ATM PIN.")
+
+
+def get_account_record_by_account_number(
+    atm_number: int,
+    account_number: str,
+    accounts: list[str]
+) -> str:
+    """Get the account record by account number."""
+    for record in accounts:
+        record = record.split(",")
+        if record[3] == str(atm_number) or record[1] == account_number:
+            return record
+
+
+def search_account(atm_number: int, accounts: list[str]) -> None:
+    """Search the account details by ATM number."""
+    print("-" * 100)
+    print(f"{BANK_NAME}".center(100))
+    print("-" * 100)
+    print("Search Account".center(100))
+    print("\n")
+    print("Search By :")
+    print("\n\t\u2714 Account Number")
+    print("\n")
+    account_number = input("Enter the bank account number: ").strip()
+    account_record = get_account_record_by_account_number(
+        atm_number=atm_number,
+        account_number=account_number,
+        accounts=accounts
+    )
+
+    print("-" * 100)
+    print("Search Result".center(100))
+    print("-" * 100)
+    print(f"Account Number: {account_record[1]}")
+    print(f"Customer Name: {account_record[2]}")
+    print(f"Account Status: {account_record[6]}")
+    print(f"Current Balance: {float(account_record[4]):.2f}")
+    print("\n")
     print("-" * 100)
 
 
@@ -696,10 +779,10 @@ def main_main(atm_number: int) -> None:
                 )
 
             elif choice == "7":
-                pass
+                atm_change_pin(atm_number=atm_number, accounts=accounts)
 
             elif choice == "8":
-                pass
+                search_account(atm_number=atm_number, accounts=accounts)
 
         print("-" * 50)
 
