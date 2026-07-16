@@ -41,6 +41,7 @@ MAX_DAILY_WITHDRAW_LIMIT = 20000
 MAX_DAILY_TRANSACTION_COUNT = 10
 
 MAX_PIN_ATTEMPTS = 3
+ATM_PIN_LIMITS = 4
 
 TRANSACTION_TYPE_WITHDRAW = "WITHDRAW"
 
@@ -311,18 +312,124 @@ def validate_atm_card_number(atm_card_num: int, accounts: list[str]) -> None:
             "Please enter a valid number (16 digits).")
 
 
+def get_atm_store_pin(
+    atm_number: int,
+    accounts: list[str]
+) -> None:
+    """Validate the ATM pin."""
+    _, store_atm_pin = get_account_record(
+        atm_card_num=atm_number,
+        accounts=accounts
+    )
+    store_atm_pin = store_atm_pin[5]
+    return validate_atm_pin_extend(store_atm_pin)
+
+
+def validate_atm_pin_extend(stored_pin):
+    """Validate the ATM PIN."""
+    attempts = 0
+
+    while attempts < MAX_PIN_ATTEMPTS:
+
+        pin = input("Enter the again ATM PIN : ")
+
+        if pin == "":
+            print("PIN is required.")
+            continue
+
+        if not pin.isdigit():
+            print("PIN must contain only numbers.")
+            continue
+
+        if len(pin) != ATM_PIN_LIMITS:
+            print(f"PIN must be exactly {ATM_PIN_LIMITS} digits.")
+            continue
+
+        if pin != stored_pin:
+            attempts += 1
+
+            if attempts == MAX_PIN_ATTEMPTS:
+                return False
+
+            print(
+                "Invalid PIN. Remaining Attempts : "
+                f"{MAX_PIN_ATTEMPTS - attempts}")
+            continue
+
+        print("Login Successful.")
+        return True
+
+
+def get_atm_card_number(prompt: str, accounts: list[str]) -> int:
+    """Get and return the ATM card number from user."""
+    while True:
+        try:
+            atm_card_number = int(input(prompt))
+            validate_atm_card_number(
+                atm_card_num=atm_card_number,
+                accounts=accounts
+            )
+        except ValueError as error:
+            print(f"Error: {error}")
+        else:
+            return atm_card_number
+
+
+def get_atm_pin(prompt: str, atm_number: int, accounts: list[str]) -> str:
+    """Get and return ATM PIN from user."""
+    try:
+        atm_pin = input(prompt).strip()
+        result = get_atm_store_pin(
+            atm_number=atm_number,
+            accounts=accounts
+        )
+        if not result:
+            print("Card Blocked.")
+            index, account_record = get_account_record(
+                atm_card_num=atm_number,
+                accounts=accounts
+            )
+            update_record = build_accounts_record(
+                account_id=account_record[0],
+                account_number=account_record[1],
+                customer_name=account_record[2],
+                atm_card_number=account_record[3],
+                balance=account_record[4],
+                atm_pin=account_record[5],
+                status=ACCOUNT_STATUS_BLOCKED,
+                created_date=account_record[7],
+                expiry_date=account_record[8],
+            )
+            accounts[index] = update_record
+            save_accounts_data(accounts=accounts)
+
+    except ValueError as error:
+        print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by the user.")
+    else:
+        return atm_pin
+
+
 def atm_login(accounts: list[str]) -> None:
     """ATM Login"""
     try:
-        atm_card_number = int(input("Enter the ATM card number: "))
-        validate_atm_card_number(
-            atm_card_num=atm_card_number,
+        atm_card_number = get_atm_card_number(
+            prompt="Enter the ATM card number: ",
+            accounts=accounts
+        )
+        atm_pin = get_atm_pin(
+            prompt="Enter the ATM PIN: ",
+            atm_number=atm_card_number,
             accounts=accounts
         )
     except ValueError as error:
         print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by the user.")
     else:
-        main_main(atm_number=atm_card_number)
+        if atm_pin:
+            main_main(atm_number=atm_card_number)
 
 
 def atm_login_menu() -> None:
@@ -644,25 +751,17 @@ def validate_atm_pin(atm_pin: str) -> str:
         raise ValueError("An ATM PIN should be in digits.")
 
 
-def get_atm_pin(prompts: str) -> str:
-    """Get the an ATM PIN from user."""
-    while True:
-        try:
-            atm_pin = input(prompts)
-            validate_atm_pin(atm_pin=atm_pin)
-        except ValueError as errror:
-            print(f"Error: {errror}")
-        else:
-            return atm_pin
-
-
 def atm_change_pin(atm_number: int, accounts: list[str]) -> None:
     """Changing to the ATM PIN from user."""
     index, account_record = get_account_record(
         atm_card_num=atm_number,
         accounts=accounts
     )
-    atm_pin = get_atm_pin("Enter the new ATM pin: ").strip()
+    atm_pin = get_atm_pin(
+        prompt="Enter the new ATM pin: ",
+        atm_number=atm_number,
+        accounts=accounts
+    ).strip()
     update_record = build_accounts_record(
         account_id=account_record[0],
         account_number=account_record[1],
