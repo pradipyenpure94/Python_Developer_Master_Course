@@ -52,7 +52,7 @@ ACCOUNT_STATUS_BLOCKED = "BLOCKED"
 ACCOUNT_STATUS_CLOSED = "CLOSED"
 
 SUCCESS = "SUCCESS"
-FAILSED = "FAILED"
+FAILED = "FAILED"
 
 
 def create_accounts_txt_file() -> None:
@@ -632,6 +632,28 @@ def update_available_balance(
     return current_balance + deposit_balance
 
 
+def validate_deposit_amount(amount: float) -> None:
+    """Validate the deposit amount."""
+    if not MIN_DEPOSIT_AMOUNT <= amount <= MAX_DEPOSIT_AMOUNT:    
+        raise ValueError(
+            f"Deposit amount must be between {MIN_DEPOSIT_AMOUNT} and "
+            f"{MAX_DEPOSIT_AMOUNT}.")
+    if amount % DEPOSIT_MULTIPLE != 0:
+        raise ValueError(f"Deposit amount must be multiple {DEPOSIT_MULTIPLE}")
+
+
+def get_deposit_amount(prompt: str) -> None:
+    """Get the deposit amount from user."""
+    while True:
+        try:
+            deposit_amount = float(input(prompt))
+            validate_deposit_amount(amount=deposit_amount)
+        except ValueError as error:
+            print(f"Error: {error}")
+        else:
+            return deposit_amount
+
+
 def atm_deposit_cash(atm_number: int, accounts: list[str]) -> None:
     """Deposit cash amount to the ATM"""
     index, account_record = get_account_record(
@@ -649,7 +671,8 @@ def atm_deposit_cash(atm_number: int, accounts: list[str]) -> None:
     print("-" * 50)
     print("\n")
     try:
-        deposit_amount = float(input("Enter the deposit amount: "))
+        deposit_amount = get_deposit_amount(
+            prompt="Enter the deposit amount: ")
     except ValueError as error:
         print(f"Error: {error}")
     except KeyboardInterrupt:
@@ -779,18 +802,17 @@ def atm_change_pin(atm_number: int, accounts: list[str]) -> None:
 
 
 def get_account_record_by_account_number(
-    atm_number: int,
     account_number: str,
     accounts: list[str]
 ) -> str:
     """Get the account record by account number."""
     for record in accounts:
         record = record.split(",")
-        if record[3] == str(atm_number) or record[1] == account_number:
+        if record[1] == account_number:
             return record
 
 
-def search_account(atm_number: int, accounts: list[str]) -> None:
+def search_account(accounts: list[str]) -> None:
     """Search the account details by ATM number."""
     print("-" * 100)
     print(f"{BANK_NAME}".center(100))
@@ -802,7 +824,6 @@ def search_account(atm_number: int, accounts: list[str]) -> None:
     print("\n")
     account_number = input("Enter the bank account number: ").strip()
     account_record = get_account_record_by_account_number(
-        atm_number=atm_number,
         account_number=account_number,
         accounts=accounts
     )
@@ -881,7 +902,7 @@ def main_main(atm_number: int) -> None:
                 atm_change_pin(atm_number=atm_number, accounts=accounts)
 
             elif choice == "8":
-                search_account(atm_number=atm_number, accounts=accounts)
+                search_account(accounts=accounts)
 
         print("-" * 50)
 
