@@ -1,7 +1,6 @@
 """LCM."""
 
-from math import lcm
-from get_gcd import validate_number
+from get_gcd import validate_number, calculate_gcd
 
 
 def calculate_lcm(first_number: int, second_number: int) -> int:
@@ -15,7 +14,10 @@ def calculate_lcm(first_number: int, second_number: int) -> int:
     Returns:
         int: The least common multiple of two input numbers.
     """
-    return lcm(first_number, second_number)
+    return first_number * second_number // calculate_gcd(
+        first_number=first_number,
+        second_number=second_number
+    )
 
 
 def main() -> None:
