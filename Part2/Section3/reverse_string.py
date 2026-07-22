@@ -25,7 +25,18 @@ def reverse_string(input_string: str) -> str:
     Returns:
         str: The reversed input string.
     """
-    return "".join(reversed(input_string))
+    char_list = list(input_string)
+
+    left = 0
+    right = len(char_list) - 1
+
+    while left < right:
+        char_list[left], char_list[right] = char_list[right], char_list[left]
+
+        left += 1
+        right -= 1
+
+    return "".join(char_list)
 
 
 def main() -> None:
