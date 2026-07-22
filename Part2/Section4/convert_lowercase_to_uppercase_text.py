@@ -1,6 +1,11 @@
 """Convert lowercase to uppercase."""
 
 from reverse_string import validate_string
+from convert_uppercase_to_lowercase import UPPERCASE_TO_LOWERCASE
+
+LOWERCASE_TO_UPPERCASE = {
+    val: key for key, val in UPPERCASE_TO_LOWERCASE.items()
+}
 
 
 def to_uppercase(text: str) -> str:
@@ -13,7 +18,7 @@ def to_uppercase(text: str) -> str:
     Returns:
         str: The input string converted to uppercase.
     """
-    return text.upper()
+    return "".join(LOWERCASE_TO_UPPERCASE.get(char, char) for char in text)
 
 
 def main() -> None:
