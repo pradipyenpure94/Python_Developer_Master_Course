@@ -2,6 +2,35 @@
 
 from reverse_string import validate_string
 
+UPPERCASE_TO_LOWERCASE = {
+    "A": "a",
+    "B": "b",
+    "C": "c",
+    "D": "d",
+    "E": "e",
+    "F": "f",
+    "G": "g",
+    "H": "h",
+    "I": "i",
+    "J": "j",
+    "K": "k",
+    "L": "l",
+    "M": "m",
+    "N": "n",
+    "O": "o",
+    "P": "p",
+    "Q": "q",
+    "R": "r",
+    "S": "s",
+    "T": "t",
+    "U": "u",
+    "V": "v",
+    "W": "w",
+    "X": "x",
+    "Y": "y",
+    "Z": "z"
+}
+
 
 def convert_to_lowercase(text: str) -> str:
     """
@@ -13,7 +42,7 @@ def convert_to_lowercase(text: str) -> str:
     Returns:
         str: The input string converted to lowercase text.
     """
-    return text.lower()
+    return "".join(UPPERCASE_TO_LOWERCASE.get(char, char) for char in text)
 
 
 def main() -> None:
