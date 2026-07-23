@@ -1,6 +1,5 @@
 """Count character frequency."""
 
-from collections import Counter
 from reverse_string import validate_string
 
 
@@ -13,10 +12,15 @@ def count_characters_frequency(text: str) -> dict[str, int]:
         text: User input text.
 
     Returns:
-        dict[str, int]: Return a new dictionary with the characters and
-        their frequency from the input string.
+        dict[str, int]: A dictionary that maps each character to its
+        corresponding frequency.
     """
-    return dict(Counter(text))
+    freq = {}
+
+    for char in text:
+        freq[char] = freq.get(char, 0) + 1
+
+    return freq
 
 
 def main() -> None:
