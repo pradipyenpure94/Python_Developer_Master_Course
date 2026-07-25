@@ -20,9 +20,13 @@ def find_largest_element(numbers: list[int | float]) -> int | float:
         numbers (list[int | float]): Input numbers list.
 
     Returns:
-        int | float: The maximum element from the input number list.
+        int | float: The largest element in the input numbers list.
     """
-    return max(numbers)
+    max_number = numbers[0]
+    for number in numbers[1:]:
+        if number > max_number:
+            max_number = number
+    return max_number
 
 
 def main() -> None:
