@@ -13,7 +13,11 @@ def find_smallest_element(numbers: list[int | float]) -> int | float:
     Returns:
         int | float: The smallest element in the input numbers list.
     """
-    return min(numbers)
+    min_number = numbers[0]
+    for number in numbers[1:]:
+        if number < min_number:
+            min_number = number
+    return min_number
 
 
 def main() -> None:
