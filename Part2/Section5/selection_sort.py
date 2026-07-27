@@ -1,0 +1,47 @@
+"""Selection sort."""
+
+from smallest_element import validate_numbers_list
+
+
+def selection_sort(numbers: list[int | float]) -> list[int | float]:
+    """
+    Return the sorted list using selection sort.
+
+    Args:
+        numbers (list[int | float]): Input numbers list.
+
+    Returns:
+        list[int | float]: The sorted list using selection sort.
+    """
+    n = len(numbers)
+
+    for i in range(n - 1):
+        min_index = i
+
+        for j in range(i + 1, n):
+            if numbers[j] < numbers[min_index]:
+                min_index = j
+
+        if min_index != i:
+            numbers[i], numbers[min_index] = numbers[min_index], numbers[i]
+
+    return numbers
+
+
+def main() -> None:
+    """Run the Main Program."""
+    try:
+        numbers = [1, 0, 1, 0, 1, 9, 9, 3]
+        validate_numbers_list(numbers=numbers)
+
+    except ValueError as error:
+        print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by the user.")
+    else:
+        result = selection_sort(numbers=numbers)
+        print(f"Sorted list (selection sort): {result}")
+
+
+if __name__ == "__main__":
+    main()
