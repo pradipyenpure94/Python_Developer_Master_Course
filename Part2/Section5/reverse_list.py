@@ -13,7 +13,7 @@ def reverse_list(numbers: list[int | float]) -> list[int | float]:
     Returns:
         list[int | float]: The reversed list.
     """
-    return list(reversed(numbers))
+    return [numbers[index] for index in range(len(numbers) - 1, -1, -1)]
 
 
 def main() -> None:
