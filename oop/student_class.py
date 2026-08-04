@@ -24,15 +24,21 @@ def validate_student_name(name: str) -> None:
 
 class Student:
     """Create student class and object"""
+    college_name = "Bharti Vidyapeeth"
+
     def __init__(self, roll_no: int, name: str) -> None:
         validate_student_roll_no(roll_no=roll_no)
         validate_student_name(name=name)
 
         self.roll_no = roll_no
-        self.name = name
+        self.name = name.strip()
 
     def __str__(self) -> str:
-        return f"Roll No: {self.roll_no}\nName: {self.name}"
+        return (
+            f"Roll No  :   {self.roll_no}\n"
+            f"Name     :   {self.name}\n"
+            f"College  :   {self.college_name}"
+        )
 
 
 def main() -> None:
