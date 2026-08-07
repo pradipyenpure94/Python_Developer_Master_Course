@@ -2,6 +2,8 @@
 
 MAX_NAME_LENGTH = 50
 MIN_ROLL_NO = 1
+MIN_PERCENTAGE = 0
+MAX_PERCENTAGE = 100
 
 
 def validate_roll_no(roll_no: int) -> None:
@@ -26,22 +28,44 @@ def validate_name(value: str, field_name: str) -> None:
         )
 
 
-class Student:
-    """Student information."""
+def validate_percentage(percentage: float) -> None:
+    """Validate the percentage."""
+    if not MIN_PERCENTAGE <= percentage <= MAX_PERCENTAGE:
+        raise ValueError(
+            f"Student percentage must be between {MIN_PERCENTAGE} "
+            f"and {MAX_PERCENTAGE}."
+        )
+
+
+class Person:
+    """Person information."""
+
+    def __init__(self, name: str) -> None:
+        self.__name = name
+
+    def get_person_name(self) -> str:
+        """Return the name of persons."""
+        return self.__name
+
+
+class Student(Person):
+    """Student class."""
     COLLEGE_NAME = "MIT College"
 
-    def __init__(self, roll_no: int, name: str) -> None:
+    def __init__(self, name: str, roll_no: int, percentage: float) -> None:
+        super().__init__(name)
         self.roll_no = roll_no
-        self.name = name
+        self.percentage = percentage
 
     def __str__(self) -> str:
-        """The student information."""
+        """Return the student information."""
         return (
             f"\n{'-' * 40}\n"
             f"Student Information: \n{'-' * 40}\n"
             f"College Name  : {Student.COLLEGE_NAME}\n"
             f"Roll No.      : {self.roll_no}\n"
-            f"Name          : {self.name}\n"
+            f"Name          : {self.get_person_name()}\n"
+            f"Percentage (%): {self.percentage}\n"
             f"{'-' * 40}"
         )
 
@@ -53,13 +77,19 @@ def main() -> None:
         validate_roll_no(roll_no=roll_no)
         name = input("Enter the name: ").strip()
         validate_name(value=name, field_name="Student")
+        percentage = float(input("Enter the percentage (%): "))
+        validate_percentage(percentage=percentage)
 
     except ValueError as error:
         print(f"Error: {error}")
     except KeyboardInterrupt:
         print("\nOperation cancelled by the user.")
     else:
-        student_obj = Student(roll_no=roll_no, name=name)
+        student_obj = Student(
+            roll_no=roll_no,
+            name=name,
+            percentage=percentage
+        )
         print(student_obj)
 
 
