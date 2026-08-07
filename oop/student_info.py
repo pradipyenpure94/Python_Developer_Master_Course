@@ -28,6 +28,8 @@ def validate_name(value: str, field_name: str) -> None:
 
 class Student:
     """Student information."""
+    COLLEGE_NAME = "MIT College"
+
     def __init__(self, roll_no: int, name: str) -> None:
         self.roll_no = roll_no
         self.name = name
@@ -35,11 +37,12 @@ class Student:
     def __str__(self) -> str:
         """The student information."""
         return (
-            "\n" + "-"*40 +
-            "\nStudent Information:\n" + "-" * 40 +
-            f"\nRoll No.      : {self.roll_no}\n" +
-            f"Name          : {self.name}\n" +
-            "-" * 40
+            f"\n{'-' * 40}\n"
+            f"Student Information: \n{'-' * 40}\n"
+            f"College Name  : {Student.COLLEGE_NAME}\n"
+            f"Roll No.      : {self.roll_no}\n"
+            f"Name          : {self.name}\n"
+            f"{'-' * 40}"
         )
 
 
