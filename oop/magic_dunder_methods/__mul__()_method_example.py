@@ -1,23 +1,29 @@
 """__mul__() method."""
 
 
-class Product:
-    """Represent a product."""
-    def __init__(self, name: str, price: float) -> None:
-        self.name = name
-        self.price = price
+class Rectangle:
+    """Represent a rectangle."""
+    def __init__(self, length: float, width: float) -> None:
+        self.length = length
+        self.width = width
 
-    def __mul__(self, quantity: object) -> float:
-        if not isinstance(quantity, (float, int)):
+    def calculate_area(self) -> float:
+        """Calculate and return the area of rectangle."""
+        return self.width * self.length
+
+    def __mul__(self, other: object) -> float:
+        """Return the product of the areas of two rectangles."""
+        if not isinstance(other, Rectangle):
             return NotImplemented
-        return self.price * quantity
+        return self.calculate_area() * other.calculate_area()
 
 
 def main() -> None:
     """Run the main program."""
-    product_obj = Product(name="Bottle", price=350)
-    total_price = product_obj * 3
-    print(f"Total product price: {total_price:.2f}")
+    rectangle_obj1 = Rectangle(length=10, width=35)
+    rectangle_obj2 = Rectangle(length=25, width=50)
+    product_area = rectangle_obj1 * rectangle_obj2
+    print(f"Product of rectangle areas: {product_area:.2f}")
 
 
 if __name__ == "__main__":
