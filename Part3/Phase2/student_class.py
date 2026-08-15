@@ -18,15 +18,13 @@ class Student:
         self.age = age
         self.course = course
 
-    def display(self) -> None:
-        """Display the student information."""
-        print("-" * 40)
-        print("Student information:")
-        print("-" * 40)
-        print(f"Name    : {self.name}")
-        print(f"Age     : {self.age}")
-        print(f"Course  : {self.course}")
-        print("-" * 40)
+    def __str__(self) -> str:
+        """Return the student information."""
+        return (
+            f"Name    : {self.name}\n"
+            f"Age     : {self.age}\n"
+            f"Course  : {self.course}\n"
+        )
 
 
 student1 = Student(name="Pradip", age=33, course="Python")
@@ -36,4 +34,7 @@ student3 = Student(name="Pranjal", age=23, course="Oracle")
 students = [student1, student2, student3]
 
 for student in students:
-    student.display()
+    print("-" * 40)
+    print("Student information:")
+    print("-" * 40)
+    print(student)
