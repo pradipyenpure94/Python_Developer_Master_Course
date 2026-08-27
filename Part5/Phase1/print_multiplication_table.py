@@ -11,5 +11,8 @@ except ValueError as error:
 except KeyboardInterrupt:
     print("\nOperation cancelled by the user.")
 else:
-    for i in range(1, 11):
-        print(f"{number} x {i} = {number * i}")
+    index = 1
+
+    while index <= 10:
+        print(f"{number} x {index} = {number * index}")
+        index += 1
