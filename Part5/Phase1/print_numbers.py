@@ -1,6 +1,8 @@
 """Print numbers from 1 to 10."""
 
 numbers = 10
+index = 1
 
-for number in range(1, numbers + 1):
-    print(number)
+while index <= numbers:
+    print(index)
+    index += 1
