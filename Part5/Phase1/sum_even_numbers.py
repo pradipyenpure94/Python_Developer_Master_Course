@@ -11,5 +11,8 @@ except ValueError as error:
 except KeyboardInterrupt:
     print("\nOperation cancelled by the user.")
 else:
-    sum_of_even_numbers = sum(range(0, number + 1, 2))
+    sum_of_even_numbers = 0
+    for num in range(0, number + 1,  2):
+        sum_of_even_numbers += num
+
     print(f"Sum of even numbers from 1 to {number}: {sum_of_even_numbers}")
