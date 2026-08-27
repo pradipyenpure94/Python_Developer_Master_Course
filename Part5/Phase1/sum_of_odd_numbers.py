@@ -10,8 +10,6 @@ except ValueError as error:
 except KeyboardInterrupt:
     print("\nOperation cancelled by the user.")
 else:
-    sum_odd_numbers = 0
-    for num in range(1, number + 1, 2):
-        sum_odd_numbers += num
+    sum_odd_numbers = sum(range(1, number + 1, 2))
 
     print(f"Sum of Odd numbers from 1 to {number}: {sum_odd_numbers}")
