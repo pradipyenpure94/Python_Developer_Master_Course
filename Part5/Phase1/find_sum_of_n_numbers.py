@@ -10,5 +10,5 @@ except ValueError as error:
 except KeyboardInterrupt:
     print("\nOperation cancelled by the user.")
 else:
-    sum_of_numbers = number_limit * (number_limit + 1) // 2
+    sum_of_numbers = sum(range(number_limit + 1))
     print(f"Sum of 1 to {number_limit}: {sum_of_numbers}")
