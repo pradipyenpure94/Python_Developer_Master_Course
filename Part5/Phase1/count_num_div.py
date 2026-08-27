@@ -12,7 +12,5 @@ except ValueError as error:
 except KeyboardInterrupt:
     print("\nOperation cancelled by the user.")
 else:
-    for num in range(1, number + 1):
-        if num % 3 == 0:
-            count += 1
+    count = len(range(3, number + 1, 3))
     print(f"Count numbers from 1 to {number}: {count}")
