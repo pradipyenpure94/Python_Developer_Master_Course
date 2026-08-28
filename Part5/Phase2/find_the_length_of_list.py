@@ -2,4 +2,9 @@
 
 
 numbers = [1, 2, 3, 4, 5]
-print(f"Length of list: {len(numbers)}")
+count_length = 0
+
+for _ in numbers:
+    count_length += 1
+
+print(f"Length of list: {count_length}")
