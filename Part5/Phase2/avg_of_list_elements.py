@@ -3,8 +3,12 @@
 
 numbers = [1, 2, 3, 4, 5]
 
-total_items = len(numbers)
-sum_of_list_items = sum(numbers)
+count_elements = 0
+total_of_elements = 0
 
-average = sum_of_list_items / total_items
-print(f"Average of list items: {average:.2f}")
+for number in numbers:
+    count_elements += 1
+    total_of_elements += number
+
+average = total_of_elements / count_elements
+print(f"Average: {average:.2f}")
