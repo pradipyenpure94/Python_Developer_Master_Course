@@ -2,11 +2,8 @@
 
 fruits = ["Kiwi", "apple", "cherry", "apple", "Banana"]
 seen = set()
-unique_fruits_list = []
-
-for item in fruits:
-    if item not in seen:
-        seen.add(item)
-        unique_fruits_list.append(item)
+unique_fruits_list = [
+    item for item in fruits if not (item in seen or seen.add(item))
+]
 
 print(f"Unique fruits item list: {unique_fruits_list}")
