@@ -1,14 +1,9 @@
 """Search for an element."""
 
 even_numbers = [2, 4, 6, 8, 10]
-search_element = 41
+search_element = 4
 
-found = False
-
-for number in even_numbers:
-    if number == search_element:
-        found = True
-        break
+found = True if search_element in even_numbers else False
 
 if found:
     print(f"{search_element} element is found.")
