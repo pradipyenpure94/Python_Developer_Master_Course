@@ -15,4 +15,3 @@ if found:
     print(f"{search_element} element is found.")
 else:
     print(f"{search_element} element is not found.")
-
