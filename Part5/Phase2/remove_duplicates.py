@@ -1,9 +1,15 @@
 """Remove duplicates from a list."""
 
-fruits = ["Kiwi", "apple", "cherry", "apple", "Banana"]
+fruits = ["Kiwi", "apple", "cherry", "apple", "Banana", "cherry"]
 seen = set()
-unique_fruits_list = [
-    item for item in fruits if not (item in seen or seen.add(item))
-]
+index = 0
 
-print(f"Unique fruits item list: {unique_fruits_list}")
+while index < len(fruits):
+    if fruits[index] in seen:
+        fruits.remove(fruits[index])
+    else:
+        seen.add(fruits[index])
+        index += 1
+
+
+print(f"Unique fruits list: {fruits}")
