@@ -1,7 +1,4 @@
-id,name
-1,Pradip
-2,Amit
-3,Sai
-4,Pranali
-5,Rutika
-6,sunny
+id,name,marks
+1,Pradip,99.0
+2,sai,100.0
+3,pranali,56.0
