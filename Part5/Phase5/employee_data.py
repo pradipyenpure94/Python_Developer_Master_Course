@@ -64,6 +64,28 @@ def add_employee() -> None:
         print("Employee added successfully.")
 
 
+def search_employee_by_id() -> None:
+    """Search employee ID."""
+    employee_records = get_employee_data()
+    try:
+        emp_id = int(input("Enter employee ID to search: "))
+        for record in employee_records:
+            # Extract employee ID and name
+            employee_id, employee_name = record.split(",")
+            if int(employee_id) == emp_id:
+                print("Employee record found.")
+                print(f"Employee ID   : {employee_id}")
+                print(f"Employee Name : {employee_name.strip()}")
+                print("-" * 30)
+                break
+        else:
+            print("Employee record not found.")
+    except ValueError as error:
+        print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by the user.")
+
+
 def main() -> None:
     """Run the main program."""
     # Create File if not exists.
@@ -71,20 +93,24 @@ def main() -> None:
 
     while True:
         print("1. Add Employee")
-        print("2. Exit")
+        print("2. Search Employee BY ID")
+        print("3. Exit")
         try:
             choice = input("Enter your choice: ").strip()
 
-            if choice not in {"1", "2"}:
-                print("Please select a valid option (1-2).")
+            if choice not in {"1", "2", "3"}:
+                print("Please select a valid option (1-3).")
                 continue
 
-            if choice == "2":
+            if choice == "3":
                 print("Exit from Operations.")
                 break
 
             if choice == "1":
                 add_employee()
+
+            if choice == "2":
+                search_employee_by_id()
 
         except KeyboardInterrupt:
             print("\nOperation cancelled by the user.")
