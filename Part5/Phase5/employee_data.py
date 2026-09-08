@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-HEADERS = "id,name\n"
+HEADER = "id,name\n"
 
 FILE_PATH = Path("Part5/Phase5/employee_data.txt")
 
@@ -11,20 +11,21 @@ def create_txt_file() -> None:
     """Create the employee data file if it does not exist."""
     if not FILE_PATH.exists():
         with open(file=FILE_PATH, mode="w", encoding="utf-8") as file_obj:
-            file_obj.write(HEADERS)
+            file_obj.write(HEADER)
 
 
 def get_employee_data() -> list[str]:
-    """Return the employee data."""
+    """Return all employee records from the data file."""
     with open(file=FILE_PATH, mode="r", encoding="utf-8") as file_obj:
         next(file_obj)
         return file_obj.readlines()
 
 
-def save_employee_data(employee: str) -> None:
+def save_employee_data(employees: list[str]) -> None:
     """Save employee data to the file."""
-    with open(file=FILE_PATH, mode="a", encoding="utf-8") as file_obj:
-        file_obj.write(employee)
+    with open(file=FILE_PATH, mode="w", encoding="utf-8") as file_obj:
+        file_obj.write(HEADER)
+        file_obj.writelines(employees)
 
 
 def validate_employee_name(name: str) -> str:
@@ -52,12 +53,15 @@ def auto_generate_employee_id() -> int:
 
 def add_employee() -> None:
     """Add a new employee record."""
+    employee_records = get_employee_data()
     try:
         emp_id = auto_generate_employee_id()
         emp_name = input("Enter the employee Name: ")
         emp_name = validate_employee_name(name=emp_name)
         emp_data = f"{emp_id},{emp_name}\n"
-        save_employee_data(employee=emp_data)
+        employee_records.append(emp_data)
+        save_employee_data(employees=employee_records)
+
     except ValueError as error:
         print(f"Error: {error}")
     else:
@@ -65,7 +69,7 @@ def add_employee() -> None:
 
 
 def search_employee_by_id() -> None:
-    """Search employee ID."""
+    """Search for an employee by ID."""
     employee_records = get_employee_data()
     try:
         emp_id = int(input("Enter employee ID to search: "))
@@ -86,6 +90,29 @@ def search_employee_by_id() -> None:
         print("\nOperation cancelled by the user.")
 
 
+def update_employee_information() -> None:
+    """Update an employee's information."""
+    employee_records = get_employee_data()
+    try:
+        emp_id = int(input("Enter the employee ID: "))
+        for index, record in enumerate(employee_records):
+            employee_id, _ = record.split(",")
+            if int(employee_id) == emp_id:
+                update_name = input("Update the employee Name: ")
+                update_name = validate_employee_name(name=update_name)
+                emp_data = f"{employee_id},{update_name}\n"
+                employee_records[index] = emp_data
+                save_employee_data(employees=employee_records)
+                print("Employee record updated successfully.")
+                break
+        else:
+            print("Employee record not found.")
+    except ValueError as error:
+        print(f"Error: {error}")
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by the user.")
+
+
 def main() -> None:
     """Run the main program."""
     # Create File if not exists.
@@ -94,15 +121,16 @@ def main() -> None:
     while True:
         print("1. Add Employee")
         print("2. Search Employee BY ID")
-        print("3. Exit")
+        print("3. Update Employee Information")
+        print("4. Exit")
         try:
             choice = input("Enter your choice: ").strip()
 
-            if choice not in {"1", "2", "3"}:
-                print("Please select a valid option (1-3).")
+            if choice not in {"1", "2", "3", "4"}:
+                print("Please select a valid option (1-4).")
                 continue
 
-            if choice == "3":
+            if choice == "4":
                 print("Exit from Operations.")
                 break
 
@@ -111,6 +139,9 @@ def main() -> None:
 
             if choice == "2":
                 search_employee_by_id()
+
+            if choice == "3":
+                update_employee_information()
 
         except KeyboardInterrupt:
             print("\nOperation cancelled by the user.")
