@@ -3,10 +3,8 @@
 name = "PYTHON"
 
 iterator = iter(name)
+i = 0
 
-print(next(iterator))
-print(next(iterator))
-print(next(iterator))
-print(next(iterator))
-print(next(iterator))
-print(next(iterator))
+while i < len(name):
+    print(next(iterator))
+    i += 1
