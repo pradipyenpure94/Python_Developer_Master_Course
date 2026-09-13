@@ -3,8 +3,9 @@
 name = "PYTHON"
 
 iterator = iter(name)
-i = 0
 
-while i < len(name):
-    print(next(iterator))
-    i += 1
+while True:
+    try:
+        print(next(iterator))
+    except StopIteration:
+        break
