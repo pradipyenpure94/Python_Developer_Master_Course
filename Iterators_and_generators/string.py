@@ -5,14 +5,9 @@ text = "Pradi p"
 
 iterator = iter(text)
 
-try:
-    print(next(iterator))
-    print(next(iterator))
-    print(next(iterator))
-    print(next(iterator))
-    print(next(iterator))
-    print(next(iterator))
-    print(next(iterator))
-    print(next(iterator))
-except StopIteration:
-    print("Iterator is exhausted.")
+while True:
+    try:
+        print(next(iterator))
+    except StopIteration:
+        print("Iterator is exhausted.")
+        break
