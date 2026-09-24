@@ -1,0 +1,6 @@
+INFO User logged in
+ERROR Database connection failed
+INFO User logged out
+ERROR File not found
+WARNING Disk space low
+ERROR
