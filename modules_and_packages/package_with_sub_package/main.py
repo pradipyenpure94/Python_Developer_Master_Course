@@ -1,8 +1,7 @@
 """Import and reuse functions."""
 
-from company.employee.employee import Employee
-from company.finance.salary import calculate_salary
-
+from company.employee import Employee
+from company.finance import calculate_salary
 
 employee = Employee(name="Pradip")
 print(f"Employee Name   : {employee.name}")

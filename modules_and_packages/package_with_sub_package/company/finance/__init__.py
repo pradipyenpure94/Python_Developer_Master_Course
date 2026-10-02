@@ -1,3 +1,3 @@
 """Import modules."""
 
-from . import salary
+from . salary import calculate_salary

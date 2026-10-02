@@ -1,3 +1,3 @@
 """Import modules."""
 
-from . import employee
+from . employee import Employee
